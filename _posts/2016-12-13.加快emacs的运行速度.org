@@ -137,7 +137,7 @@ ok!
 =~/.emacs.d-backup= 。
 
 
-执行 =emacs2ram restore= 是吧 =~/.emacs.d-backup= 同步到 =~/.eamcs.d= ，同时删除
+执行 =emacs2ram restore= 是把 =~/.emacs.d-backup= 同步到 =~/.eamcs.d= ，同时删除
 =/tmp/.emacs.d-用户名= 和 =~/.emacs.d-backup= 。
 
 
