@@ -1,0 +1,179 @@
+#+TITLE: 在 linux 下安装 zlib（openSUSE Leap 42.2）
+#+DATE: <2016-12-17 Saturday 20:43:43>
+#+TAGS: linux, zlib
+#+PERMALINK: 在 linux 下安装 zlib
+#+VERSION: 0.1
+#+CATEGORIES: linux
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+#+BEGIN_QUOTE
+在 linux 下安装 zlib，测试系统为 =openSUSE Leap 42.2= 。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* zlib 简介
+#+BEGIN_QUOTE
+参考[[http://baike.baidu.com/link?url=CVTE1oPyeITvhkxeeJaPIbZhozQgMj4nFZDbZ7PMyK11L-Ft_5efh_6FaL3cGaJ9KPtxleGi8Z1pdDxmhTCVga][百度百科]]
+#+END_QUOTE
+zlib 是提供数据压缩用的函式库，由 Jean-loup Gailly 与 Mark Adler 所开发，初版
+0.9 版在 1995 年 5 月 1 日发表，zlib 使用 DEFLATE 算法，最初是为 libpng 函式库所
+写的，后来普遍为许多软件所使用。此函式库为自由软件，使用 zlib 授权。截至 2007 年
+3 月，zlib 是包含在 Coverity 的美国国土安全部赞助者选择继续审查的开源项目。
+** 数据头(header)
+zlib 能使用一个 gzip 数据头，zlib 数据头或者不使用数据头压缩数据。
+
+通常情况下，数据压缩使用 zlib 数据头，因为这提供错误数据检测。当数据不使用数据头
+写入时，结果是没有任何错误检测的原始 DEFLATE 数据，那么解压缩软件的调用者不知道
+压缩数据在什么地方结束。
+
+gzip 数据头比 zlib 数据头要大，因为它保存了文件名和其他文件系统信息，事实上这是
+广 泛使用的 gzip 文件的数据头格式。注意 zlib 函式库本身不能创建一个 gzip 文件，但
+是它相当轻松的通过把压缩数据写入到一个有 gzip 文件头的文件中。
+** 算法
+目前 zlib 仅支持一个 LZ77 的变种算法，DEFLATE 的算法。
+
+这个算法使用很少的系统资源，对各种数据提供很好的压缩效果。这也是在 ZIP 档案中无
+一例外的使用这个算法。（尽管 zip 文件格式也支持几种其他的算法）。
+
+看起来 zlib 格式将不会被扩展使用任何其他算法，尽管数据头可以有这种可能性。
+** 使用资源
+函数库提供了对处理器和内存使用控制的能力。
+
+不同的压缩级别数值可以指示不同的压缩执行速度。
+
+还有内存控制管理的功能。这在一些诸如嵌入式系统这样内存有限制的环境中是有用的。
+** 策略
+压缩可以针对特定类型的数据进行优化。
+
+如果你总是使用 zlib 库压缩压缩特定类型的数据，那么可以使用有针对性的策略可以提高
+压缩效率和性能。例如，如果你的数据包含很长的重复数据，那么可以用 RLE（运行长度编
+码）策略，可能会有更好的结果。
+
+对于一般的数据，默认的策略是首选。
+** 错误处理
+错误可以被放发现和跳过。
+
+数据混乱可以被检测（只要数据和 zlib 或者 gzip 数据头一起被写入－参见上面）
+
+此外，如果全刷新点（full-flush points）被写入到压缩后的数据流中，那么错误数据是
+可以被跳过的，并且解压缩将重新同步到下个全刷新点。（错误数据的无错恢复被提供）。
+全刷新点技术对于在不可靠的通道上的大数据流是很有用的，一些过去的数据丢失是不重要
+的（例如多媒体数据），但是建立太多的全刷新点会极大的影响速度和压缩。
+** 数据长度
+对于压缩和解压缩，没有数据长度的限制。
+
+重复调用库函数允许处理无限的数据块。一些辅助代码（计数变量）可能会溢出，但是不影
+响实际的压缩和解压缩。
+
+
+当压缩一个长（无限）数据流时，最好写入全刷新点。
+** 业界应用
+今天，zlib 是一种事实上的业界标准，以至于在标准文档中，zlib 和 DEFLATE 常常互换
+使用。数以千计的应用程序直接或间接依靠 zlib 压缩函式库，包括：
+- Linux 核心：使用 zlib 以实作网络协定的压缩、档案系统的压缩以及开机时解压缩自身
+的核心。
+- libpng：用于 PNG 图形格式的一个实现，对 bitmap 数据规定了 DEFLATE 作为流压缩方
+法。
+- Apache：使用 zlib 实作 http 1.1。
+- OpenSSH、OpenSSL：以 zlib 达到最佳化加密网络传输。
+- FFmpeg：以 zlib 读写 Matroska 等以 DEFLATE 算法压缩的多媒体串流格式。
+- rsync：以 zlib 最佳化远端同步时的传输。
+- Subversion、Git 和 CVS 版本控制 系统，使用 zlib 来压缩和远端仓库的通讯流量。
+- dpkg 和 RPM 等包管理软件：以 zlib 解压缩 RPM 或者其他封包。
+因为其代码的可移植性，宽松的许可以及较小的内存占用，zlib 在许多嵌入式设备中也有应用。
+
+
+
+
+* 安装 zlib
+** 下载
+在 [[http://zlib.net/][zlib 官网]] 下载最新版本，此处为 =1.2.8= 版本，下载链接：[[http://zlib.net/zlib-1.2.8.tar.gz][zlib-1.2.8.tar.gz]]
+** 解压
+终端进入 =zlib-1.2.8.tar.gz= 所在的目录执行解压命令：
+#+BEGIN_SRC sh
+tar -xzvf zlib-1.2.8.tar.gz
+#+END_SRC
+解压完成得到 =zlib-1.2.8= 文件夹。
+** 配置安装
+终端进入 =zlib-1.2.8= 文件夹
+*** 标准配置安装（未测试，本人使用下面的[[1][自定义安装目录安装]]的）
+获得 =su= 权限或者使用 =sudo= 执行命令：
+1) build static
+
+   #+BEGIN_SRC sh
+   $ ./configure
+   $ make test
+   $ make install
+   #+END_SRC
+2) build shared libraries
+
+   #+BEGIN_SRC sh
+   $ make clean
+   $ ./configure --shared
+   $ make test
+   $ make install
+   $ cp zutil.h /usr/local/include
+   $ cp zutil.c /usr/local/include
+   #+END_SRC
+   现在 =/usr/local/lib= 下应该有这几个文件：
+   - libz.a
+   - libz.so -> libz.so.1.2.1
+   - libz.so.1 -> libz.so.1.2.1
+   - libz.so.1.2.1
+   =/usr/local/include= 下应该有这几个文件：
+   - zconf.h
+   - zlib.h
+   - zutil.h
+3) 系统配置
+   
+   获得 =su= 权限或者使用 =sudo= 执行命令：
+   #+BEGIN_SRC sh
+   echo /usr/local/zlib/lib > /etc/ld.so.conf.d/zlib.conf
+   #+END_SRC
+
+4) 加载配置
+   
+   获得 =su= 权限或者使用 =sudo= 执行命令：
+   #+BEGIN_SRC sh
+   $ ldconfig
+   $ updatedb
+   #+END_SRC
+*** 自定义安装目录安装<<1>>
+1) 安装在 =/usr/local/zlib= 文件夹下。
+
+   获得 =su= 权限或者使用 =sudo= 执行命令创建文件夹：
+   #+BEGIN_SRC sh
+   mkdir /usr/local/zlib
+   #+END_SRC
+2) 执行配置：
+
+   #+BEGIN_SRC sh
+   ./configure --prefix=/usr/local/zlib
+   #+END_SRC
+3) 编译：
+
+   #+BEGIN_SRC sh
+   make
+   #+END_SRC
+4) 安装：
+
+   获得 =su= 权限或者使用 =sudo= 执行命令：
+   #+BEGIN_SRC sh
+   make install
+   #+END_SRC
+5) 系统配置
+
+   获得 =su= 权限或者使用 =sudo= 执行命令：
+   #+BEGIN_SRC sh
+   echo /usr/local/zlib/lib > /etc/ld.so.conf.d/zlib.conf
+   #+END_SRC
+6) 加载配置
+
+   获得 =su= 权限或者使用 =sudo= 执行命令：
+   #+BEGIN_SRC sh
+   $ ldconfig
+   $ updatedb
+   #+END_SRC
