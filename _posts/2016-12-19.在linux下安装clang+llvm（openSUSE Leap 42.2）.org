@@ -1,0 +1,42 @@
+#+TITLE: 在 linux 下安装 clang+llvm（openSUSE Leap 42.2）
+#+DATE: <2016-12-19 Monday 13:08:28>
+#+TAGS: linux, clang, llvm
+#+PERMALINK: 在 linux 下安装 clang+llvm（openSUSE Leap 42.2）
+#+VERSION: 0.1
+#+CATEGORIES: linux
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+#+BEGIN_QUOTE
+在 linux 下安装 clang+llvm（预编译版本）。测试系统为 openSUSE Leap 42.2。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* 下载
+进入 [[http://releases.llvm.org/download.html]] 下载，此时的最新版本为 =3.9.0= ，找
+到 =Pre-Built Binaries:= 列表下的对应发行版的预编译版本，此处下载的为 openSUSE 版：
+[[http://releases.llvm.org/3.9.0/clang+llvm-3.9.0-x86_64-opensuse13.2.tar.xz][Clang for OpenSuSE 13.2 x86_64]] 。
+* 安装
+解压 =clang+llvm-3.9.0-x86_64-opensuse13.2.tar.xz= 文件。
+#+BEGIN_SRC sh
+xz -d clang+llvm-3.9.0-x86_64-opensuse13.2.tar.xz
+tar -xvf clang+llvm-3.9.0-x86_64-opensuse13.2.tar
+#+END_SRC
+得到 =clang+llvm-3.9.0-x86_64-opensuse13.2= 文件夹。
+
+进入 =clang+llvm-3.9.0-x86_64-opensuse13.2= 文件夹：
+#+BEGIN_SRC sh
+cd clang+llvm-3.9.0-x86_64-opensuse13.2
+#+END_SRC
+将所有文件拷贝到 =/usr/local= 文件夹下：（获取 =su= 权限或使用 =sudo= 执行命令）
+#+BEGIN_SRC sh
+cp -r * /usr/local
+#+END_SRC
+安装完成。
+
+查看 clang 的版本：
+#+BEGIN_SRC sh
+clang -v
+#+END_SRC
