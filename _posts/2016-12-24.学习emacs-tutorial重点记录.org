@@ -1,0 +1,103 @@
+#+TITLE: 学习 emacs-tutorial 重点记录
+#+DATE: <2016-12-24 Saturday 11:34:42>
+#+TAGS: emacs
+#+PERMALINK: 学习 emacs-tutorial 重点记录
+#+VERSION: 0.1
+#+CATEGORIES: emacs
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+#+BEGIN_QUOTE
+emacs tutorial 是 emacs 官方的快速指南，主要介绍了 emacs 在编辑时一些常用的组合
+按键，一些术语的说明。因为此文件是只读文件，所以在此文件中可以随意测试、更改。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* 如何打开 emacs tutorial
+这里介绍在 emacs 中两种打开 tutorial 的方式（都是指在 =图形界面= 的 emacs 中）。
+** 用鼠标
+   打开 emacs 后会显示一些简单的信息，例如 emacs logo、版本、一些链接等信息。
+   使用鼠标点击 =Emacs Tutorial= 链接就会打开 emacs 快速指南了。
+#+ATTR_ORG: :width 300px
+#+ATTR_HTML: :width 300px
+#+ATTR_HTML: :alt (点击图片可放大)
+[[file:2016-12-24.学习emacs-tutorial重点记录/1_2016-12-24_13-37-05.png]]
+** 使用组合键
+   使用组合键 =C-h t= （按住 =Ctrl= 键，按 =h= 键，然后同时松开，再按 =t= 键，
+   =t= 代表 =tutorial= ） 打开 tutorial。
+* 常用组合键
++ =C-v=     向下滚动一页（等效按键： *PageUp* ）
++ =M-v=     向上滚动一页（等效按键： *PageDn* ）
++ =C-l=     重绘屏幕，将光标所在行置于屏幕中间行
++ =C-p=     光标向上一行（p 代表 previous，等效按键： *Up* ）
++ =C-n=     光标向下一行（n 代表 next，等效按键： *Down* ）
++ =C-f=     光标向前一个字符（f 代表 forward，等效按键： *Right* ）
++ =M-f=     光标向前一个词
++ =C-b=     光标向后一个字符（b 代表 backward，等效按键： *Left* ）
++ =M-b=     光标向后一个词
++ =C-a=     光标移动到行首
++ =M-a=     光标移动到句首
++ =C-e=     光标移动到行尾
++ =M-e=     光标移动到句尾
++ =M-<=     光标移动到文件首
++ =M->=     光标移动到文件尾
++ =<Delback>= 删除（delete）光标前的一个字符
++ =C-d=       删除（delete）光标后的一个字符
++ =M-<Delback>= 移除（kill）光标前的一个词
++ =M-d=         移除（kill）光标后的一个词
++ =C-k=         移除（kill）从光标到行尾之间的所有字符
++ =M-k=         移除（kill）从光标到句尾之间的所有字符
++ =C-SPC=       开始选择
++ =C-@=         开始选择
++ =C-w=         剪切（kill）
++ =M-w=         复制
++ =C-y=         召回（yank），粘贴
++ =M-y=         循环选择召回（yank），粘贴
++ =C-x u=       撤销
++ =C-_=         撤销
++ =C-u 4 C-f= 光标向前移动 4 个字符
++ =C-u 4 C-v= 向下滚动 4 行
++ =C-u 4 %=   会插入 4 个%，即：%%%%
++ =C-g=     终止命令
++ =C-x 1=   关闭其他窗格
++ =C-x C-f= 打开文件
++ =C-x C-s= 保存文件
++ =C-x C-b= 列出缓冲区
++ =C-x s=   保存所有缓冲区文件
++ =C-x C-c= 关闭 Emacs
++ =M-q=     段落排版
++ =C-s=     搜索
++ =C-x 2=   在下方划分一个窗格
++ =C-x 3=   在右方划分一个窗格
++ =C-M-v=   光标到下一个窗格
++ =C-M-S-v= 光标到上一个窗格
++ =C-x o=   光标到其他窗格
++ =C-x 4 C-f= 在下方划分一个窗格并打开文件
+
++ =C-h c $$$-$= 查看组合键 *$$$-$* 的简要说明信息
++ =C-h k $$$-$= 查看组合键 *$$$-$* 的详细说明信息
++ =C-h f=   查看函数说明
++ =C-h v=   查看变量说明
++ =C-h a=   搜索相关命令
++ =C-h i=   打开联机手册（ =m emacs <Return>= 可阅读 emacs 使用手册， =?= 可阅读 Info 使用指南）
+* 术语对照
++ =command= 命令
++ =cursor=  光标
++ =scrolling= 滚动
++ =numeric argument= 数字参数
++ =window= 窗格
++ =frame=  窗口
++ =insert= 插入
++ =delete= 删除（不可恢复）
++ =kill= 移除（可召回）
++ =yank= 召回
++ =undo= 撤销
++ =file= 文件
++ =buffer= 缓冲区
++ =minibuffer= 小缓冲区
++ =echo area= 回显区
++ =mode line= 状态栏
++ =search= 搜索
++ =incremental search= 渐进式搜索

@@ -1,0 +1,145 @@
+#+TITLE: 学习 vimtutor、gvimtutor 重点记录
+#+DATE: <2016-12-24 Saturday 17:03:16>
+#+TAGS: vim
+#+PERMALINK: 学习 vimtutor、gvimtutor 重点记录
+#+VERSION: 0.1
+#+CATEGORIES: vim
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+#+BEGIN_QUOTE
+vimtutor 和 gvimtutor 是 vim 和 gvim 官方的简单教程，主要介绍了 vim 和 gvim 在编
+辑时一些常用的按键，一些术语的说明。vimtutor 和 gvimtutor 是相同的，vimtutor 是
+在终端下，gvimtutor 是在 GUI 下，因为此文件是只读文件，所以在此文件中可以随意测
+试、更改。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* 如何打开 vimtutor、gvimtutor
+** 使用终端打开
+*** 打开 vimtutor
+    执行 =vimtutor= 命令即可，此命令不会另外开启窗口，直接在终端里。可能有些按键
+    会被终端占用，所以此方法不建议使用。
+#+ATTR_ORG: :width 300px
+#+ATTR_HTML: :width 300px
+#+ATTR_HTML: :alt (点击图片可放大)
+[[file:2016-12-24.学习vimtutor、gvimtutor重点记录/1_2016-12-24_17-18-22.png]]
+*** 打开 gvimtutor
+    执行 =gvimtutor= 命令即可，会开启 gvim 窗口，推荐。
+#+ATTR_ORG: :width 300px
+#+ATTR_HTML: :width 300px
+#+ATTR_HTML: :alt (点击图片可放大)
+[[file:2016-12-24.学习vimtutor、gvimtutor重点记录/1_2016-12-24_17-29-24.png]]
+** 在 gvim 中打开
+   在 gvim 中输入 =:e $VIMRUNTIME/tutor/tutor.zh_cn.utf-8= 即可,推荐。
+#+ATTR_ORG: :width 300px
+#+ATTR_HTML: :width 300px
+#+ATTR_HTML: :alt (点击图片可放大)
+[[file:2016-12-24.学习vimtutor、gvimtutor重点记录/1_2016-12-24_17-37-05.png]]
+* 常用按键
+#+BEGIN_QUOTE
++ =()= 表示模式，例如 =(N)= 表示 =Normal= 模式。
+  - =N= *Normal* 正常模式
+  - =V= *Visual* 可视模式
++ =[]= 表示可选， =<>= 表示必选。例如 =[n]= 表示可选到输入数字， =<n>= 表示必选
+  输入数字。
+  - =n= *number* 数字
+  - =e= *Enter* 回车
+  - =s= *string* 字符串
+  - =sold= *string-old* 旧字符串，配合 =snew= 使用
+  - =snew= *string-new* 新字符串，配合 =sold= 使用
+  - =sh= *shell* shell命令
+  - =f= *filename* 文件名
+#+END_QUOTE
+** 移动
++ =(N)[n]l= 向右移动
++ =(N)[n]h= 向左移动
++ =(N)[n]k= 向上移动
++ =(N)[n]j= 向下移动
++ =(N)0= 光标移动到行首，包括空格
++ =(N)^= 光标移动到行首字符
++ =(N)$= 光标移动到行尾
++ =(N)[n]w= 跳转到右侧单词首字母
++ =(N)[n]e= 若光标当前在单词词尾，跳转到右侧单词词尾，否则跳转到当前单词词尾
++ =(N)[n]b= 跳转到单词首字母
++ =(N)<n>G= 跳转到第 =<n>= 行
++ =(N)G= 跳转到文件最后一行行尾
++ =(N)gg= 跳转到文件第一行行首
+** 进入插入模式
++ =(N)i= 在光标所在字符后进入插入模式
++ =(N)I= 在当前行首进入插入模式
++ =(N)a= 在光标所在字符前进入插入模式
++ =(N)A= 在当前行尾进入插入模式
++ =(N)o= 在当前行下面插入一行进入插入模式
++ =(N)O= 在当前行上面插入一行进入插入模式
+** 保存、退出
++ =(N):w= 保存当前文件
++ =(N):q= 退出 vim、gvim
++ =(N):wq= 保存当前文件并退出 vim、gvim
++ =(N):q!= 强制退出，放弃所有改动
+** 删除
++ =(N)[n]x= 删除光标所在的字符
++ =(N)d[n]w= 从光标处删除至下一个单词词首，包括两个词之间的空格，但不包括后一个
+  词的首字符
++ =(N)d[n]e= 从光标处删除至词尾，不包括空格
++ =(N)d$= 从光标处删除至行尾
++ =(N)D= 同 =(N)d$=
++ =(N)[n]dd= 删除当前行
+** 复制、粘贴
++ =(V)y= 复制选中的文本
++ =(N)y[n]w= =(N)y[n]e= =(N)y[n]l= =(N)y$= 等等
++ =(N)[n]p= 对于字符串是粘贴到当前光标的后面，对于行是粘贴到下一行
++ =(N)[n]P= 对于字符串是粘贴到当前光标的前面，对于行是粘贴到上一行
+** 修改、替换
++ =(N)r= 修改光标下的单个字符
++ =(N)R= 修改从光标开始的字符序列
++ =(N)cw= 从光标处删除至词尾，不包括空格，并进入插入模式
++ =(N)ce= 同 =(N)cw=
++ =(N)c$= 从光标处删除至行尾，并进入插入模式
++ =(N)C= 同 =(N)c$=
++ =(N)cc= 删除整行文本，并进入插入模式
++ =(N)~= 反转光标所在字符的大小写
++ =(N):s/<sold>/<snew><e>= 将光标所在行的第一个 =<sold>= 替换为 =<snew>=
++ =(N):s/<sold>/<snew>/g<e>= 将光标所在行的所有 =<sold>= 替换为 =<snew>=
++ =(N):<n1>,<n2>s/<sold>/<snew>/g= 将 =<n1>= 行至 =<n2>= 行之间的所有 =<sold>=
+  替换为 =<snew>=
++ =(N):%s/<sold>/<snew>/g= 将整个文件中的 =<sold>= 替换为 =<snew>=
++ =(N):%s/<sold>/<snew>/gc= 将整个文件中的 =<sold>= 进行匹配，并询问是否替换为
+  =<snew>=
+** 撤销
++ =(N)[n]u= undo，撤销最后执行的命令
++ =(N)U= undo，撤销对整行的修改
++ =(N)[n]CTRL-R= redo,即撤销undo。撤销掉撤销命令，恢复操作前的状态，可多次输入
+** 搜索
++ =(N)/<s><e>= 查找字符串 =<s>= ， =n= 查找下一个匹配， =N= 查找上一个匹配
++ =(N)?<s><e>= 逆向查找字符串
++ =(N)CTRL-o= 回退到之前的位置，可多次输入
++ =(N)CTRL-i= 回退到较新的位置
++ =(N)%= 光标放在配对的括号处按下此组合键可跳转到匹配的括号处
+** 调整文本位置
++ =(N):ce<e>= 使本行内容居中（center）
++ =(N):ri<e>= 使本行内容居右（right）
++ =(N):le<e>= 使本行内容居左（left）
+** 保存
++ =(N):w [f]<e>= 保存当前buffer到 =f= 文件
++ =(V):w [f]<e>= 保存选中的文本到 =f= 文件，当按下 =:= 后，在minibuffer会显示
+  ='<,'>= 此时再输入 =w [f]=
+** 执行外部命令
++ =(N):!<sh><e>= 执行外部shell命令，例如： /:!dir/
+** 提取、合并文件
++ =(N):r <f><e>= 在光标所在行的下一行插入 =f= 文件的所有内容
++ =(N):r !<sh><e>= 在光标所在行的下一行插入 =sh= 命令的输出内容
+** 信息、帮助命令
++ =(N)CTRL-G= 在minibuffer显示光标所在行的位置及文件状态
++ =(N):help<e>= 打开帮助
++ =(N):help <s><e>= 打开关于 =s= 主题的帮助文件
+#+BEGIN_QUOTE
+打开帮助文件后使用 =CTRL-w CTRL-w= 在窗口之间跳转
+
+使用 =(N):q<e>= 关闭帮助窗口
+
+在帮助文件中使用 =CTRL-]= 跳转到光标所在标签的主题帮助，使用 =CTRL-t= 或
+=CTRL-o= 跳回
+#+END_QUOTE

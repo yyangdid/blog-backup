@@ -1,0 +1,76 @@
+#+TITLE: 学习elisp(002):记录X分钟速成Elisp
+#+DATE: <2017-01-01 Sunday 19:41:34>
+#+TAGS: emacs, elisp
+#+PERMALINK: 学习elisp(002):记录X分钟速成Elisp
+#+VERSION: 0.1
+#+CATEGORIES: emacs, elisp
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+# -*- eval: (setq org-download-image-dir (file-name-sans-extension (buffer-name))); -*-
+#+BEGIN_QUOTE
+学习 [[https://learnxinyminutes.com/][X分钟速成Y]] 系列之 [[https://learnxinyminutes.com/docs/elisp/][elisp]] 版本（官方中文版：[[https://learnxinyminutes.com/docs/zh-cn/elisp-cn/][elisp]]）。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
++ Elisp是由符号表达式构成的（即 =s-表达式= 或 =s式= ）， =s-表达式= 两侧由括号=()= 包围，一个 =s-表达式= 可以包含 =原子符号= 和 =其他的 s-表达式= 。
+#+BEGIN_SRC emacs-lisp
+;; 手动elisp 使用分号表示本行注释开始
+;; 把光标放在右侧小括号后面，按下组合键C-x C-e 可在minibuffer显示计算结果
+(+ 1 2);; 3
+;; 在上面这个 s-表达式 中包含两个原子符号 1 和 2，意思是对 1 和 2 进行相加
+(+ 1 (+ 2 3));; 6
+;; 上面的 s-表达式 是由原子符号 1 和另外一个 s-表达式 (+ 2 3) 组成的
+;; 在进行求值计算的时候先对 (+ 2 3) 进行求值，得出结果 x，然后在计算 (+ 1 x) 的值
+;;
+#+END_SRC
++ 使用 =setq= 可以给一个变量进行赋值
+#+BEGIN_SRC emacs-lisp
+;; 给 my-name 进行赋值：
+(setq my-name "Emacs");; 此处执行，在 minibuffer 显示 "Emacs"
+;;
+#+END_SRC
++ 使用 =insert= 可以在光标处插入字符串
+#+BEGIN_SRC emacs-lisp
+;; 在光标处插入字符串：
+(insert "Lisp");; 此处执行，在光标处插入 Lisp
+;; 可以给 insert 传入多个参数：
+(insert "Emacs" "-lisp");; 此处执行，在光标处插入 Emacs-Lisp
+;; insert的参数可以是变量：
+(insert "I am using " my-name);; 此处执行，在光标处插入 I am using Emacs
+;;
+#+END_SRC
++ 可以把 =s-表达式= 嵌入到 =函数= 中
+#+BEGIN_SRC emacs-lisp
+;; 定义一个函数 hello()：
+(defun hello() (insert "I am using " my-name));; 此处执行，在 minibuffer 输出 hello
+;; 调用这个函数：
+(hello);; 此处执行，在光标处插入 I am using Emacs
+;;
+#+END_SRC
++ 带参数的函数
+#+BEGIN_SRC emacs-lisp
+;; 定义带参数 name 的函数：
+(defun hello (name) (insert "Hello " name));; 此处执行，在 minibuffer 输出 hello
+;; 调用这个函数，把字符串 "Elisp" 作为参数传进去：
+(hello "Elisp");; 此处执行，在光标处插入 Hello Elisp
+;;
+#+END_SRC
++ 分割切换窗口
+#+BEGIN_SRC emacs-lisp
+  (switch-to-buffer-other-window "*scratch*");; 此处执行，会分割出另外一个窗口来显
+                                             ;; 示 *scratch* 这个buffer，且光标位
+                                             ;; 于 *scratch* 中，使用 C-x o 在各个
+                                             ;; 窗口中跳转
+  ;;
+#+END_SRC
++ 使用 =progn= 可以将 =s-表达式= 结合起来，所包含的 =s-表达式= 会依次执行
+#+BEGIN_SRC emacs-lisp
+  (progn
+    (switch-to-buffer-other-window "*scratch*")
+    (hello "Emacs World"));; 此处执行，会分割出另外一个窗口来显示 *scratch* ，并在
+                          ;; *scratch* 中显示 Hello Emacs World
+    ;;
+#+END_SRC
