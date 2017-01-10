@@ -17,12 +17,12 @@
 #+END_HTML
 + Elisp是由符号表达式构成的（即 =s-表达式= 或 =s式= ）， =s-表达式= 两侧由括号=()= 包围，一个 =s-表达式= 可以包含 =原子符号= 和 =其他的 s-表达式= 。
 #+BEGIN_SRC emacs-lisp
-;; 手动elisp 使用分号表示本行注释开始
+;; elisp 使用分号表示本行注释开始
 ;; 把光标放在右侧小括号后面，按下组合键C-x C-e 可在minibuffer显示计算结果
 (+ 1 2);; 3
 ;; 在上面这个 s-表达式 中包含两个原子符号 1 和 2，意思是对 1 和 2 进行相加
 (+ 1 (+ 2 3));; 6
-;; 上面的 s-表达式 是由原子符号 1 和另外一个 s-表达式 (+ 2 3) 组成的
+;; 上面的 s-表达式 是由原子符号 1 和另外一个 s-表达式 (+ 2 3) 组(erase-buffer)成的
 ;; 在进行求值计算的时候先对 (+ 2 3) 进行求值，得出结果 x，然后在计算 (+ 1 x) 的值
 ;;
 #+END_SRC
@@ -73,4 +73,111 @@
     (hello "Emacs World"));; 此处执行，会分割出另外一个窗口来显示 *scratch* ，并在
                           ;; *scratch* 中显示 Hello Emacs World
     ;;
+#+END_SRC
++ 擦除 buffer 里面的内容
+#+BEGIN_SRC emacs-lisp
+(progn
+  (switch-to-buffer-other-window "*scratch*");; 分割并切换到 *scratch* buffer
+  (erase-buffer);; 擦除 *scratch* buffer 里面的内容
+  (hello));; 执行 hello 函数
+
+(progn
+  (switch-to-buffer-other-window "*scratch*")
+  (erase-buffer)
+  (hello)
+  (other-window 1));; 切换到窗格 1
+;;
+#+END_SRC
++ 使用 let() 把一个值和一个局部变量绑定
+#+BEGIN_SRC emacs-lisp
+(let ((local-name "you"));; 在一定程度上 let 可以代替 progn
+  (switch-to-buffer-other-window "*ttt*")
+  (erase-buffer)
+  (hello local-name)
+  (other-window 1))
+;;
+#+END_SRC
++ 格式化字符串
+#+BEGIN_SRC emacs-lisp
+(format "Hello %s!\n" "elisp");; %s 是字符串占位符，此处被 "elisp" 代替, \n 是换行符
+;; 使用格式化重写上面的 hello () 函数
+(defun hello (name)
+  (insert (format "Hello %s!\n" name)))
+
+(hello "KuGou");; 调用函数
+
+;; 新建一个 greeting 函数
+(defun greeting (name)
+  (let ((your-name "Dave"))
+    (insert (format "Hello %s!\nI am %s."
+                    name
+                    your-name))))
+(greeting "Bluce")
+;;
+#+END_SRC
++ 和用户交互的函数
+#+BEGIN_SRC emacs-lisp
+(read-from-minibuffer "Enter your name:")
+;; 重写 greeting 函数
+(defun greeting (from-name)
+  (let ((your-name (read-from-minibuffer "Enter your name:")))
+    (insert (format "Hello %s!\nI am %s."
+                    from-name
+                    your-name))))
+(greeting "Bluce")
+;; 再重写 greeting 函数，让结果在另外的窗口中显示
+(defun greeting (from-name)
+  (let ((your-name (read-from-minibuffer "Enter your name:")))
+    (switch-to-buffer-other-window "*ttt*")
+    (erase-buffer)
+    (insert (format "Hello %s!\nI am %s."
+                    from-name
+                    your-name))
+    (other-window 1)))
+(greeting "Bluce")
+;;
+#+END_SRC
++ 列表
+#+BEGIN_SRC emacs-lisp
+;; 定义列表，给列表赋值
+(setq list-of-name '("Firefox" "Chrome" "Opera"))
+;; 获取列表的第一个值,没有副作用，不会改变列表
+(car list-of-name)
+;; 获取列表剩余的所有值,没有副作用，不会改变列表
+(cdr list-of-name)
+;; 把一个值添加到列表的开头，会直接对列表本身进行操作
+(push "Vivaldi" list-of-name)
+;; 把列表中的每一个元素作为参数依次传给 hello() 函数
+(mapcar 'hello list-of-name)
+
+;; 改进 greeting() 函数，对列表中的所有元素都被 hello() 函数调用
+(defun greeting ()
+    (switch-to-buffer-other-window "*ttt*")
+    (erase-buffer)
+    (mapcar 'hello list-of-names)
+    (other-window 1))
+(greeting)
+;;
+#+END_SRC
++ 查找和替换
+#+BEGIN_SRC emacs-lisp
+;; 把 *ttt* buffer 中的所有 Hello 替换为 Hi
+;; (goto-char (point-min)) 把光标移到 buffer 开头
+;; (search-forward "Hello") 查找字符串 "Hello"
+;; (while x y) 当 x 返回某个值时执行 y，当 x 返回 nil(空)时推出循环
+(defun replace-hello-by-hi ()
+    (switch-to-buffer-other-window "*ttt*")
+    (goto-char (point-min))
+    (while (search-forward "Hello")
+      (replace-match "Hi"))
+    (other-window 1))
+(replace-hello-by-hi)
+;; 上面函数替换成功，但会报错："Search failed: Hello"。如果要避免这个错误, 需要
+;; 告诉 `search-forward' 这个命令是否在 buffer 的某个地方停止查找, 并且在什么都
+;; 没找到时是否应该不给出错误提示
+
+;; 使用 (search-forward "Hello" nil t) 即可
+;; 参数 nil 表示不限于某个范围
+;; 参数 t 表示当什么都没找到时不给出错误提示
+;;
 #+END_SRC
