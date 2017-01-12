@@ -1,15 +1,15 @@
-#+TITLE: 在 linux 下安装 zlib（openSUSE Leap 42.2）
+#+TITLE: 在Linux下安装 zlib（openSUSE Leap 42.2）
 #+DATE: <2016-12-17 Saturday 20:43:43>
-#+TAGS: linux, zlib
-#+PERMALINK: 在 linux 下安装 zlib
+#+TAGS: Linux, zlib
+#+PERMALINK: 在Linux下安装zlib
 #+VERSION: 0.1
-#+CATEGORIES: linux
+#+CATEGORIES: Linux
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-在 linux 下安装 zlib，测试系统为 =openSUSE Leap 42.2= 。
+在 Linux 下安装 zlib，测试系统为 =openSUSE Leap 42.2= 。
 #+END_QUOTE
 #+BEGIN_HTML
 <!--more-->

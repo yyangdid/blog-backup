@@ -1,15 +1,15 @@
-#+TITLE: 加快 emacs 的运行速度
+#+TITLE: 加快Emacs的运行速度
 #+DATE: <2016-12-13 Tuesday 13:53:19>
-#+TAGS: emacs
-#+PERMALINK: 加快 emacs 的运行速度
+#+TAGS: Emacs
+#+PERMALINK: 加快Emacs的运行速度
 #+VERSION: 0.1
-#+CATEGORIES: emacs
+#+CATEGORIES: Emacs
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-此方法可以加快 emacs 的运行速度，而不是启动速度。其实就是把 emacse 的配置文件
+此方法可以加快 Emacs 的运行速度，而不是启动速度。其实就是把 Emacs 的配置文件
 =.emacs.d= 文件夹放到内存中，而内存的吞吐速度要比普通的机械硬盘快的多，相应的
 emacs 的速度也会有很大提升。
 #+END_QUOTE

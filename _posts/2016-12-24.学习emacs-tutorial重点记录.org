@@ -1,15 +1,15 @@
-#+TITLE: 学习 emacs-tutorial 重点记录
+#+TITLE: 学习emacs-tutorial重点记录
 #+DATE: <2016-12-24 Saturday 11:34:42>
-#+TAGS: emacs
-#+PERMALINK: 学习 emacs-tutorial 重点记录
+#+TAGS: Emacs
+#+PERMALINK: 学习emacs-tutorial重点记录
 #+VERSION: 0.1
-#+CATEGORIES: emacs
+#+CATEGORIES: Emacs
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-emacs tutorial 是 emacs 官方的快速指南，主要介绍了 emacs 在编辑时一些常用的组合
+emacs tutorial 是 Emacs 官方的快速指南，主要介绍了 Emacs 在编辑时一些常用的组合
 按键，一些术语的说明。因为此文件是只读文件，所以在此文件中可以随意测试、更改。
 #+END_QUOTE
 #+BEGIN_HTML

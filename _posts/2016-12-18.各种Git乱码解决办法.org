@@ -1,15 +1,15 @@
-#+TITLE: 各种 git 乱码解决办法
+#+TITLE: 各种Git乱码解决办法
 #+DATE: <2016-12-19 Monday 12:27:18>
-#+TAGS: git, 乱码
-#+PERMALINK: 各种 git 乱码解决办法
+#+TAGS: Git, 乱码
+#+PERMALINK: 各种Git乱码解决办法
 #+VERSION: 0.1
-#+CATEGORIES: git
+#+CATEGORIES: Git
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-各种 git 乱码解决办法。测试系统为 openSUSE Leap 42.2。
+各种 Git 乱码解决办法。测试系统为 openSUSE Leap 42.2。
 #+END_QUOTE
 #+BEGIN_HTML
 <!--more-->

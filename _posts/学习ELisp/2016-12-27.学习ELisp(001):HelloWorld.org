@@ -1,15 +1,15 @@
-#+TITLE: 学习elisp(001):HelloWorld
+#+TITLE: 学习ELisp(001):HelloWorld
 #+DATE: <2016-12-27 Tuesday 19:12:30>
-#+TAGS: emacs, elisp
-#+PERMALINK: 学习elisp(001):HelloWorld
+#+TAGS: Emacs, ELisp
+#+PERMALINK: 学习ELisp(001):HelloWorld
 #+VERSION: 0.1
-#+CATEGORIES: emacs, elisp
+#+CATEGORIES: Emacs, ELisp
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-开始抽时间学习下elisp，毕竟想用好emacs的话，elisp必须得会。本篇主要声明了学习材
+开始抽时间学习下 ELisp，毕竟想用好 Emacs 的话，ELisp必须得会。本篇主要声明了学习材
 料的来源、用到的资料，在以后的记录中就不做重复的资料来源介绍了。当然，和学习其他
 语言一样，先来个Hello World ^V^
 #+END_QUOTE
@@ -20,8 +20,8 @@
 + [[https://learnxinyminutes.com/docs/elisp/][Learn X in Y minutes]]
   中文版：[[https://learnxinyminutes.com/docs/zh-cn/elisp-cn/][官方中文版]]
 + [[http://smacs.github.io/elisp/][Emacs Lisp 简明教程]]
-* Hello World例子
-elisp代码文件不能作为一个单独的可执行文件运行，所有的elisp代码都是在emacs软件下
+* Hello World 例子
+elisp代码文件不能作为一个单独的可执行文件运行，所有的 ELisp 代码都是在 Emacs 软件下
 运行的。
 
 切换到 =*scratch*= 这个buffer内，如果当前模式不是 =lisp-interaction-mode= ，那么
@@ -32,7 +32,7 @@ elisp代码文件不能作为一个单独的可执行文件运行，所有的eli
 (message "Hello World")
 #+END_SRC
 把光标放到右括号的后面，按下 =C-j= 组合键，此时在 =*scratch*= 的代码后面输出了
-="Hello World"= ，并且在minibuffer也显示了 =Hello World= ，说明代码运行成功了。
-或者使用组合键 =C-x C-e= ，这样只会在minibuffer显示 ="Hello World"= ，此组合键使
+="Hello World"= ，并且在 minibuffer 也显示了 =Hello World= ，说明代码运行成功了。
+或者使用组合键 =C-x C-e= ，这样只会在 minibuffer 显示 ="Hello World"= ，此组合键使
 全局的，即使没有开启 =lisp-interaction-mode= 也能使用。
 

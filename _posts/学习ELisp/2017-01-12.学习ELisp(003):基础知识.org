@@ -1,0 +1,34 @@
+#+TITLE: 学习ELisp(003):基础知识
+#+DATE: <2017-01-12 Thursday 20:45:11>
+#+TAGS: Emacs, ELisp
+#+PERMALINK: 学习ELisp(003):基础知识
+#+VERSION: 0.1
+#+CATEGORIES: Emacs, ELisp
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+# -*- eval: (setq org-download-image-dir (file-name-sans-extension (buffer-name))); -*-
+#+BEGIN_QUOTE
+学习资料：[[http://smacs.github.io/elisp/][Emacs Lisp 简明教程]]
+
+本章节主要记录 ELisp 编程中的基本概念，例如如何定义函数，控制结构，变量的使用和作用域......
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* 函数和变量
+** 函数的声明和调用
++ 声明一个函数的格式：
+  #+BEGIN_SRC emacs-lisp
+  ;; 格式：
+  (defun function-name (arguments-list)
+    "document string"
+    function-body)
+  ;;
+  #+END_SRC
+  ELisp使用关键字 =defun= 来定义函数，函数中的参数列表可以为 =零个、一个或多个=
+  。函数中的文档字符串可以省略不写但不推荐。
+  #+BEGIN_QUOTE
+  在 Emacs 中，当光标处于一个函数名上的时候，使用 =C-h f= 可以查看此函数的文档。
+  #+END_QUOTE

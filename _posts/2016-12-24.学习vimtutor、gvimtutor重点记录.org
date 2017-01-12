@@ -1,15 +1,15 @@
-#+TITLE: 学习 vimtutor、gvimtutor 重点记录
+#+TITLE: 学习vimtutor、gvimtutor重点记录
 #+DATE: <2016-12-24 Saturday 17:03:16>
-#+TAGS: vim
-#+PERMALINK: 学习 vimtutor、gvimtutor 重点记录
+#+TAGS: Vim
+#+PERMALINK: 学习vimtutor、gvimtutor重点记录
 #+VERSION: 0.1
-#+CATEGORIES: vim
+#+CATEGORIES: Vim
 #+LAYOUT: post
 #+AUTHOR: yyangdid
 #+EMAIL: yyangdid@gmail.com
 #+COMMENTS: yes
 #+BEGIN_QUOTE
-vimtutor 和 gvimtutor 是 vim 和 gvim 官方的简单教程，主要介绍了 vim 和 gvim 在编
+vimtutor 和 gvimtutor 是 Vim 和 GVim 官方的简单教程，主要介绍了 Vim 和 GVim 在编
 辑时一些常用的按键，一些术语的说明。vimtutor 和 gvimtutor 是相同的，vimtutor 是
 在终端下，gvimtutor 是在 GUI 下，因为此文件是只读文件，所以在此文件中可以随意测
 试、更改。
