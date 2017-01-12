@@ -79,8 +79,8 @@ fi
 
 #+END_SRC
 =emacs2ram= 文件：
-- [[https://github.com/yyangdid/blog-backup/blob/master/myfiles/emacs/emacs2ram][github]]
-- [[https://coding.net/u/yyangdid/p/blog-backup/git/blob/master/myfiles/emacs/emacs2ram][condig.net]]
+- [[https://github.com/yyangdid/blog-backup/blob/master/MyFiles/Emacs/emacs2ram][github]]
+- [[https://coding.net/u/yyangdid/p/blog-backup/git/blob/master/MyFiles/Emacs/emacs2ram][condig.net]]
 * 使用
 ** load 到 =tmpfs=
 进入脚本所在的目录执行：
