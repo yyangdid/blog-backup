@@ -32,3 +32,40 @@
   #+BEGIN_QUOTE
   在 Emacs 中，当光标处于一个函数名上的时候，使用 =C-h f= 可以查看此函数的文档。
   #+END_QUOTE
+  + 例子一：声明一个没有参数的函数
+    #+BEGIN_SRC emacs-lisp
+      ;; 声明一个函数 hello () :
+      (defun hello ()
+        "Say hello."
+        (message "Hello"))
+      ;;调用此函数
+      (hello)
+      ;;
+    #+END_SRC
+  + 例子二：声明一个带有参数的函数
+    #+BEGIN_SRC emacs-lisp
+      ;; 声明一个带参数的函数 hello (name)：
+      (defun hello (name)
+        "Say hello to user whose name is NAME."
+        (message "Hello %s." name))
+      ;;调用此函数
+      (hello "Emacs") ;; => Hello Emacs.
+      ;;
+    #+END_SRC
+    #+BEGIN_QUOTE
+    每个函数都有一个返回值，这个返回值一般是函数定义里面的最后一个表达式的值。
+    #+END_QUOTE
+** 变量
++ 直接对变量赋值
+
+   在 ELisp 中可以直接给一个变量进行赋值，而不需要声明。
+   #+BEGIN_SRC emacs-lisp
+     ;; 直接对变量 foo 赋值
+     (setq foo "I am foo") ;; => "I am foo"
+     (message foo) ;; => "I am foo"
+     ;;
+   #+END_SRC
+   #+BEGIN_QUOTE
+   把光标放在变量名上使用 =C-h v= 可以查看此变量的文档说明。
+   #+END_QUOTE
+ 
