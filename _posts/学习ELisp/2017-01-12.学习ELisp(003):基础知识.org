@@ -49,7 +49,7 @@
         "Say hello to user whose name is NAME."
         (message "Hello %s." name))
       ;;调用此函数
-      (hello "Emacs") ;; => Hello Emacs.
+      (hello "Emacs") ;; ⇒ Hello Emacs.
       ;;
     #+END_SRC
     #+BEGIN_QUOTE
@@ -61,11 +61,272 @@
    在 ELisp 中可以直接给一个变量进行赋值，而不需要声明。
    #+BEGIN_SRC emacs-lisp
      ;; 直接对变量 foo 赋值
-     (setq foo "I am foo") ;; => "I am foo"
-     (message foo) ;; => "I am foo"
+     (setq foo "I am foo") ;; ⇒ "I am foo"
+     (message foo) ;; ⇒ "I am foo"
      ;;
    #+END_SRC
    #+BEGIN_QUOTE
    把光标放在变量名上使用 =C-h v= 可以查看此变量的文档说明。
    #+END_QUOTE
- 
+
++ 使用 =defvar= 关键字声明变量
+  
+  上面使用 =setq= 的方式给一个变量赋值是不能够添加文档字符串的， =defvar= 可以在
+  赋值的同时添加文档字符串，如果 =defvar= 声明赋值的变量已经存在一个值了，
+  =defvar= 不会改变这个值。
+
+  =defvar= 的使用格式：
+  #+BEGIN_SRC emacs-lisp
+    (defvar variable-name value
+      "Document string")
+  #+END_SRC
+  #+BEGIN_SRC emacs-lisp
+    (setq foo "Emacs") ;; 使用 setq 给变量 foo 赋值为 "Emacs"
+    (insert foo)       ;; ⇒ Emacs
+    (defvar foo "ELisp"
+      "Test defvar")   ;; 使用 defvar 给变量 foo 赋值并添加文档字符串
+    (isner foo)        ;; ⇒ Emacs ;; defvar 没有改变 foo 的值
+    ;;
+  #+END_SRC 
+  #+BEGIN_QUOTE
+  在 ELips 中函数是全局的，变量也很容易成为全局的，在给函数和变量起名字的时候使
+  用 =C-h f= 和 =C-h v= 确定一下要定义的名字是否已经被使用了。
+  #+END_QUOTE
+
+*** 局部变量
+
+    ELisp 使用 =let= 和 =let*= 来绑定局部变量。
+    
+    + =let=
+      
+      格式：
+      #+BEGIN_SRC emacs-lisp
+        (let bindings
+          body)
+        ;; bindings 可以是 (var value) 这种对 var 声明并赋予初始值的形式(注意添加小括号)，
+        ;; 也可以是 var 这种声明一个初始值为 nil 的变量，可以声明一个或多个。
+        ;; 局部变量的作用域只在 (let) 范围内
+        ;;
+      #+END_SRC
+      例一：声明一个初始值不为 nil 的局部变量
+      #+BEGIN_SRC emacs-lisp
+        (defun let_test01 ()
+          (let ((a 1))
+            (message "let_test01 - %i"
+                     a)))
+        (let_test01) ;; ⇒ "let_test01 - 1"
+        ;; 把光标放在变量名 a 上，使用 C-h v 查看变量会提示此变量不存在，这就是局部变量。
+        ;;
+      #+END_SRC
+      例二：声明一个初始值不为 nil 的局部变量和一个初始值为 nil 的局部变量
+      #+BEGIN_SRC emacs-lisp
+        (defun let_test02 ()
+          (let ((a 1)
+                b)
+            (setq b (+ a 1))
+            (message "let_test02 - a:%i - b:%i"
+                     a
+                     b)))
+        (let_test02) ;; ⇒ "let_test02 - a:1 - b:2"
+        ;;
+      #+END_SRC
+      例三：声明多个局部变量
+      #+BEGIN_SRC emacs-lisp
+        (defun let_test03 ()
+          (let ((a 1)
+                b
+                c
+                d)
+            (setq b (+ a 1))
+            (setq c (+ a 2))
+            (setq d (+ a 3))
+            (message "let_test03 - a:%i - b:%i - c:%i - d:%i"
+                     a
+                     b
+                     c
+                     d)))
+        (let_test03) ;; ⇒ let_test03 - a:1 - b:2 - c:3 - d:4
+        ;;
+      #+END_SRC
+      例四：在函数中使用函数传参<<001>>
+      #+BEGIN_SRC emacs-lisp
+        (defun circle-area (radius)
+          (let ((pai 3.1415926)
+                area)
+            (setq area (* pai radius radius))
+            (message "半径为 %.2f 的圆面积为 %.2f"
+                     radius
+                     area)))
+        (circle-area 3) ;; ⇒ 半径为 3.00 的圆面积为 28.27
+        ;;
+      #+END_SRC
+
+  + =let*=
+    
+    =let*= 和 =let= 的格式相同，唯一区别是 =let*= 在定义局部变量的时候可以使用前面已经定义过的变量直接运算。
+    
+    例：改写 [[001][=let= 例四：在函数中使用函数传参]]
+    #+BEGIN_SRC emacs-lisp
+      (defun circle-area (radius)
+        (let* ((pai 3.1415926)
+               (area (* pai radius radius)))
+          (message "半径为 %.2f 的圆面积为 %.2f"
+                   radius
+                   area)))
+      (circle-area 3) ;; ⇒ 半径为 3.00 的圆面积为 28.27
+      ;;
+    #+END_SRC
+** lambda 表达式
+   lambda 表达式类似其他编程语言的匿名函数，其定义格式和 =defun= 相同。
+   
+   使用 =funcall= 来调用。
+
+   定义格式：
+   #+BEGIN_SRC emacs-lisp
+     (lambda (arguments-list)
+       "ducomentation string"
+       body)
+     ;;
+   #+END_SRC
+   例一：
+   #+BEGIN_SRC emacs-lisp
+     (funcall (lambda (name)
+                (message "Hello, %s"
+                         name))
+              "ELisp") ;; ⇒ Hello, ELis
+     ;;
+   #+END_SRC
+   例二：把 lambda 表达式赋值给一个变量
+   #+BEGIN_SRC emacs-lisp
+     (setq lmd (lambda (name)
+                 (message "Hello, %s"
+                          name)))
+     (funcall lmd "ELisp") ;; ⇒ Hello, ELisp
+     ;;
+   #+END_SRC
+** 控制结构
+*** 顺序执行
+
+    在 =defun= =let= 等环境中语句是按顺序执行的，但很多情况不会，需要使用 =progn= 表达式。
+
+    格式：
+    #+BEGIN_SRC emacs-lisp
+      (progn A B C D ...)
+      ;;
+    #+END_SRC
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (progn
+        (setq a 2)
+        (message "square of %i is %i"
+                 a
+                 (* a a))) ;; ⇒ square of 2 is 4
+      ;;
+    #+END_SRC
+
+*** 条件判断
+    
+    + if
+       
+      格式：
+      #+BEGIN_SRC emacs-lisp
+        (if condition
+            then
+          else)
+        ;;
+      #+END_SRC
+      例：
+      #+BEGIN_SRC emacs-lisp
+        (defun my-max (a b)
+          (if (> a b)
+              (message "a:%i" a)
+            (message "b:%i" b)))
+        (my-max 3 4) ;; ⇒ b:4
+        ;;
+      #+END_SRC
+
+    + cond
+
+      类似 =java= 中的 =case= 。
+      
+      格式：
+      #+BEGIN_SRC emacs-lisp
+        (cond (case1 do-when-case1)
+              (case2 do-when-case2)
+              ...
+              (t do-when-none-meet))
+        ;;
+      #+END_SRC
+      例：
+      #+BEGIN_SRC emacs-lisp
+        (defun fib (n)
+          (cond ((= n 0) 0)
+                ((= n 1) 1)
+                ((= n 2) 2)
+                (n)))
+        (fib 4) ;; ⇒ 4
+        ;;
+      #+END_SRC
+
+*** 循环   while
+    格式：
+    #+BEGIN_SRC emacs-lisp
+      (while condition
+        body)
+      ;;
+    #+END_SRC
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (defun facl (n)
+        (let ((res 1))
+          (while (> n 1)
+            (setq res (* res n)
+                  n (- n 1)))
+          res))
+      (facl 3) ;; ⇒ 6
+      ;;
+    #+END_SRC
+
+*** 逻辑运算
+    使用 =and= =or= =not= 。其中 and 和 or 具有短路性质。在表达式比较短的时候，
+    可以使用 and 代替 when，or 代替 unless，这是一般不关心返回值，主要是作用于表
+    达式内其他语句的副作用。例如 or 经常用来设置函数参数的默认值， and 经常用于
+    参数检查。
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (defun hello-world (&optional name)
+        (or name (setq name "Emacs"))
+        (message "Hello, %s"
+                 name))
+      (hello-world) ;; ⇒ Hello, Emacs
+      (hello-world "ELisp") ;; ⇒ Hello, ELisp
+
+      (defun square-number-p (n)
+        (and (>= n 0)
+             (= (/ n (sqrt n)) (sqrt n)))) ;; sqrt 是内置函数，开平方 √
+      (square-number-p -1) ;; nil
+      (square-number-p 25) ;; t
+      ;;
+    #+END_SRC
+
+* 本节函数列表
+  #+BEGIN_SRC emacs-lisp
+    (defun NAME ARGLIST [DOCSTRING] BODY...)
+    (defvar SYMBOL &optional INITVALUE DOCSTRING)
+    (setq SYM VAL SYM VAL ...)
+    (let VARLIST BODY...)
+    (let* VARLIST BODY...)
+    (lambda ARGS [DOCSTRING] [INTERACTIVE] BODY)
+    (progn BODY ...)
+    (if COND THEN ELSE...)
+    (cond CLAUSES...)
+    (when COND BODY ...)
+    (unless COND BODY ...)
+    (when COND BODY ...)
+    (or CONDITIONS ...)
+    (and CONDITIONS ...)
+    (not OBJECT)
+    (sqrt NUMBER)
+    ;;
+  #+END_SRC
+  
