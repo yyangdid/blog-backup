@@ -1,0 +1,489 @@
+#+TITLE: 学习ELisp(004):基本数据类型--数字
+#+DATE: <2017-01-22 Sunday 20:20:57>
+#+TAGS: Emacs, ELisp
+#+PERMALINK: 学习ELisp(004):基本数据类型--数字
+#+VERSION: 0.1
+#+CATEGORIES: Emacs, ELisp
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+# -*- eval: (setq org-download-image-dir (file-name-sans-extension (buffer-name))); -*-
+#+BEGIN_QUOTE
+学习资料：[[http://smacs.github.io/elisp/][Emacs Lisp 简明教程]]
+
+本章节主要记录 ELisp 对数字的一些操作：类型测试、数字比较、数字运算、数字转换。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
+* 数字分类和表示方法
+  ELisp 中的数字分为整数和浮点数( =没有双精度浮点数 double= )和 NaN 。
+
+  + 整数
+    
+    整数的表数范围根据使用机器的不同而不同，可以使用 =most-negative-fixnum= 和 =most-positive-fixnum= 两个变量得到。
+  
+    例：获取本机的整数表数范围
+    #+BEGIN_SRC emacs-lisp
+      (defun num-test01 ()
+        (message "%s -- %s"
+                 most-negative-fixnum
+                 most-positive-fixnum))
+      (num-test01) ;; ⇒ -2305843009213693952 -- 2305843009213693951
+      ;;
+    #+END_SRC
+  
+    可以使用多种进制来输入一个整数。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (defun num-test02 (num)
+        (message "%s"
+                 num))
+      (num-test02 #b1011000) ;; ⇒ 88 ;; 使用二进制输入数字
+      (num-test02 #o130) ;; ⇒ 88 ;;使用八进制输入数字
+      (num-test02 88) ;; ⇒ 88 ;; 使用十进制输入数字
+      (num-test02 #x58) ;; ⇒ 88 ;; 使用十六进制输入数字
+      ;;
+    #+END_SRC
+
+  + 浮点数
+    
+    1500.0, 15e2, 1.5e3, .15e4都表示1500. 。
+
+  + NaN
+    
+    使用 =(/ 0.0 0.0)= 可是得到 NaN =-0.0e+NaN= 。
+
+* 数字测试函数
+  ELisp 的测试函数一般都采用 =p= 结尾， =p= 代表 =predicate= 。如果函数名是一个
+  单词，一般在这个单词后面加一个 =p= 字母，如果函数名是由多个单词组成的，一般在
+  这个函数名的后面添加 =-p= 。
+  
+  常用的数字测试函数：
+ | 函数名               | 作用                    |
+ |----------------------+-------------------------|
+ | (integerp /OBJECT/)  | 测试是否为 =整数类型=   |
+ | (floatp /OBJECT/)    | 测试是否为 =浮点数类型= |
+ | (numberp /ObJECT/)   | 测试是否为 =数字类型=   |
+ | (zerop /OBJECT/)     | 测试是否为 =零=         |
+ | (wholenump /OBJECT/) | 测试是否为 =非负整数=   |
+ 
+ 例:
+ #+BEGIN_SRC emacs-lisp
+   (integerp 1) ;; ⇒ t
+   (integerp 1.) ;; ⇒ t
+   (integerp 1.0) ;; ⇒ nil
+   (integerp -0.0e+NaN) ;; ⇒ nil
+   (integerp 0) ;; ⇒ t
+
+   (floatp 1) ;; ⇒ nil
+   (floatp 1.) ;; ⇒ nil
+   (floatp 1.0) ;; ⇒ t
+   (floatp -0.0e+NaN) ;; ⇒ t
+   (floatp 0) ;; ⇒ nil
+
+   (zerop 1) ;; ⇒ nil
+   (zerop 0) ;; ⇒ t
+
+   (numberp 1) ;; ⇒ t
+   (numberp 0) ;; ⇒ t
+   (numberp 1.0) ;; ⇒ t
+   (numberp -0.0e+NaN) ;; ⇒ t
+
+   (wholenump 1) ;; ⇒ t
+   (wholenump 0) ;; ⇒ t
+   (wholenump 1.0) ;; ⇒ nil
+   (wholenump -0.0e+NaN) ;; ⇒ nil
+   (wholenump -1) ;; ⇒ nil
+   ;;
+ #+END_SRC
+
+* 比较操作符
+  ELisp 中的比较操作符有 ~>、<、>=、<=、=、eql~ 。
+
+  由于 ELisp 中的赋值是由 setq 完成的，所以 ~=~ 用来测试两个数字的值是否相等。
+
+  而 =eql= 不仅能测试数字的值是否相等，也能测试数字类型是否相同。
+
+  ELisp 中 ~不存在 +=、-=、*=~ 。
+  
+  ~/=~ 作为不等于测试。
+
+  例：
+  #+BEGIN_SRC emacs-lisp
+    (setq a 1)
+    (setq b 1)
+    (setq c 2)
+    (setq d 1.00)
+    (< a c) ;; ⇒ t
+    (> a c) ;; ⇒ nil
+    (<= a c) ;; ⇒ t
+    (>= a c) ;; ⇒ nil
+    (= a d) ;; ⇒ t
+    (eql a d) ;; ⇒ nil
+    (/= a c) ;; ⇒ t
+    ;;
+  #+END_SRC
+
+  对于浮点数的测试往往是不准确的，例：
+  #+BEGIN_SRC emacs-lisp
+    (setq a1 1.0e-3) ;; ⇒ 0.001
+    (setq a2 (- (+ 1.0 1.0e-3) 1.0)) ;; ⇒ 0.000999999999999889
+    (= a1 a2) ;; ⇒ nil
+    ;;
+  #+END_SRC
+
+  如果一定要对两个浮点数进行比较，只能在一定范围内进行比较：
+  #+BEGIN_SRC emacs-lisp
+    (defvar fuzz-factor 1.0e-6)
+    (defun approx-equal (a b)
+      "在 1.0e-6 范围内进行浮点数比较"
+      (or (and (= a 0) (= b 0))
+          (< (/ (abs (- a b)) (max (abs a) (abs b)))
+             fuzz-factor)))
+    (approx-equal a1 a2) ;; ⇒ t
+    ;;
+  #+END_SRC
+
+* 数字转换函数
+** 整数转换为浮点数
+   使用 =float= 函数可将整数转换为浮点数。
+
+   例：
+   #+BEGIN_SRC emacs-lisp
+     (setq a4 2)
+     (float a4) ;; ⇒ 2.0
+
+     (float 3) ;; ⇒ 3.0
+     (float -3) ;; ⇒ -3.0
+     ;;
+   #+END_SRC
+** 浮点数转换为整数
+   | 函数     | 作用                                           |
+   |----------+------------------------------------------------|
+   | truncate | 转换为靠近 0 的整数                            |
+   | floor    | 转换为最接近的不比本身大的整数                 |
+   | ceiling  | 转换为最接近的不比本身小的整数                 |
+   | round    | 四舍五入后的整数，即与本身求差绝对值最小的整数 |
+   例：
+   #+BEGIN_SRC emacs-lisp
+     ;; truncate ;; 转换为靠近 0 的整数
+     (truncate 2.3)   ;; ⇒ 2
+     (truncate -2.3)  ;; ⇒ -2
+     (truncate 2.8)   ;; ⇒ 2
+     (truncate -2.8)  ;; ⇒ -2
+
+     ;; floor ;; 转换为最接近的不比本身大的整数
+     (floor 2.3)   ;; ⇒ 2
+     (floor -2.3)  ;; ⇒ -3
+     (floor 2.8)   ;; ⇒ 2
+     (floor -2.8)  ;; ⇒ -3
+
+     ;; ceiling ;; 转换为最接近的不比本身小的整数
+     (ceiling 2.3)  ;; ⇒ 3
+     (ceiling -2.3) ;; ⇒ -2
+     (ceiling 2.8)  ;; ⇒ 3
+     (ceiling -2.8) ;; ⇒ -2
+
+     ;; round ;; 四舍五入后的整数，即与本身求差绝对值最小的整数
+     (round 2.3)  ;; ⇒ 2
+     (round -2.3) ;; ⇒ -2
+     (round 2.8)  ;; ⇒ 3
+     (round -2.8) ;; ⇒ -3
+     ;;
+   #+END_SRC
+   #+BEGIN_QUOTE
+   *注：*
+   #+END_QUOTE
+   浮点数的范围是无穷大的，而整数的是有范围的，当使用 =浮点数转换为整数= 函数的
+   时候，数值超越了整数的表数范围时，代码报错。
+
+   当使用 =整数转换为浮点数= 函数时，即使被转换的整数是超过整数表数范围的，转换
+   为浮点数也不会报错。
+
+   例：
+   #+BEGIN_SRC emacs-lisp
+     ;; 1e30 是一个超过了整数表数范围的数字
+     (floor 1e30) ;; ⇒ 报错 ;; 转换为整数
+     (float 1e30) ;; ⇒ 1e+30 ;; 转换为浮点数
+     ;;
+   #+END_SRC
+* 数字的运算
+  + 四则运算 =+、-、*、/= 。
+
+    *注：* 整数和整数运算返回整数，整数和浮点数运算返回
+    浮点数。在整数和整数做除法运算时，例如：(/ 1 2) 返回值为 0 ，相当于 truncate
+    了一下，改写为 (/ 1 2.0) 返回值为 0.5 。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (+ 1 2) ;; ⇒ 3
+      (- 1 2) ;; ⇒ -1
+      (* 1 2) ;; ⇒ 2
+      (/ 1 2) ;; ⇒ 0
+      (/ 1 2.0) ;; ⇒ 0.5
+      (+ 1.0 2.0) ;; ⇒ 3.0
+      ;;
+    #+END_SRC
+
+  + =++= 和 =--=
+    
+    ELisp 中没有 =++和--= 操作，类似的的函数是 =1+= 和 =1-= ，使用
+    =setq= 赋值代替 =++ 和 --= 。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (setq a6 1) ;; ⇒ 1
+      (setq a6 (1+ a6)) ;; ⇒ 2
+      (setq a6 (1+ a6)) ;; ⇒ 3
+      (setq a6 (1- a6)) ;; ⇒ 2
+      ;;
+    #+END_SRC
+
+    在 Common Lisp 中有两个宏实现了 =++ 和 --= 操作： =incf 和 decf= ，Emacs 包含
+    一个模拟 Common Lisp 的库 =cl= ，在 ELisp 代码文件中使用这两个实现宏，要在 ELisp 文件头加入：
+    #+BEGIN_SRC emacs-lisp
+      (eval-when-compile
+        (require 'cl))
+            ;;
+    #+END_SRC
+    由于 =incf= 和 =decf= 是两个宏，这样写在运行时不会导入 cl 库。
+
+  + 求绝对值
+
+    ELisp 使用 =abs= 函数求绝对值。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (abs 2)  ;; ⇒ 2
+      (abs -2) ;; ⇒ 2
+      ;;
+    #+END_SRC
+
+  + =%= 函数 （我个人认为是求余）
+    
+    格式：
+    #+BEGIN_SRC emacs-lisp
+      (% 被除数 除数)
+      ;;
+    #+END_SRC
+
+    参与运算的必须是整数，可以是正整数或负整数，运算时先把负数取绝对值，再运算。
+    运算结果和被除数的正负号相同，若被除数等于除数则结果为 0 ，若被除数小于除数
+    则结果为被除数。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (% 3 8)   ;; ⇒ 3
+      (% 3 -8)  ;; ⇒ 3
+      (% -3 8)  ;; ⇒ -3
+      (% -3 -8) ;; ⇒ -3
+
+      (% 8 3)   ;; ⇒ 2
+      (% 8 -3)  ;; ⇒ 2
+      (% -8 3)  ;; ⇒ -2
+      (% -8 -3) ;; ⇒ -2
+      ;;
+    #+END_SRC
+
+  + =mod= 函数（个人认为是取模）
+    
+    格式：
+    #+BEGIN_SRC emacs-lisp
+      (mod 被取模数 模数)
+      ;;
+    #+END_SRC
+
+    参与运算的可以是整数或浮点数，可以是正数或负数，运算结果和模数的正负号相同。
+    若被取模数和模数的正负号相同，则运算方法和求余相同，运算结果的正负号和模数相
+    同。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (mod 9 4)       ;; ⇒ 1
+      (mod -9 -4)     ;; -1
+      (mod 5.5 2.5)   ;; ⇒ 0.5
+      (mod -5.5 -2.5) ;; ⇒ -0.5
+      ;;
+    #+END_SRC
+
+    若被取模数和模数的正负号不相同，运算方法如下：
+    
+    如 a 为被取模数， b 为模数，计算 (mod a b) 。假定两个未知数 x 和 y，则一定会
+    有一个或多个结果满足如下条件：
+    
+    #+BEGIN_SRC emacs-lisp
+     ;; x * b + y = a 且 0 ≤ |y| ≤ |x|
+    #+END_SRC
+
+    因为会有一组或多组 x y 的值满足上面的公式，如果只有一组 x y 的值满足公式，则
+    y 的值就是 (mod a b) 的计算结果，如果有多组 x y 的值满足公式，那么 y 的值还
+    是不能被唯一确定，所以不同的编程语言对此种情况下 y 的取值有不同的规定。
+    
+    把 =x= 值称为 =商= ， =y= 值称为 =余= 。
+
+    =Java、C++= 取 *商 (即 x) 值尽可能大的那一组里面 y 的值为计算结果*
+    
+    =Python、ELisp= 取 *商 (即 x) 值尽可能小的那一组里面 y 的值为计算结果*
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (mod 9 -4) ;; ⇒ -3
+      ;; 满足 (x * b + y = a) 公式
+      ;; (-2) * (-4) + (1) = 9
+      ;; (-3) * (-4) + (-3) = 9 ;; √ ;;商 (即 x) 值比较小
+
+      (mod -9 4) ;; ⇒ 3
+      ;; 满足 (x * b + y = a) 公式
+      ;; (-2) * 4 + (-1) = (-9)
+      ;; (-3) * 4 + (3) = (-9) ;; √ ;;商 (即 x) 值比较小
+
+      (mod 5.5 -2.5) ;; ⇒ -2
+      ;; 满足 (x * b + y = a) 公式
+      ;; (-2) * (-2.5) + (0.5) = 5.5
+      ;; (-3) * (-2.5) + (-2) = 5.5 ;; √ ;;商 (即 x) 值比较小
+
+      (mod -5.5 2.5) ;; ⇒ 2
+      ;; 满足 (x * b + y = a) 公式
+      ;; (-2) * 2.5 + (-0.5) = -5.5
+      ;; (-3) * 2.5 + (2) = -5.5 ;; √ ;;商 (即 x) 值比较小
+      ;;
+    #+END_SRC
+
+  + 三角运算函数
+    
+    ELisp 中的三角运算函数有： =sin、cos、tan、asin、acos、atan= 。
+
+  + 开方函数
+    
+    ELisp 的开方函数是 =sqrt= 。
+
+    正数开方的结果都为 =浮点数= ，0 的开方结果为 =0.0= ，所有负数的开方结果为
+    =-0.0e+NaN= 。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (sqrt 4) ;; ⇒ 2.0
+      (sqrt 0) ;; ⇒ 0.0
+      (sqrt -4.4) ;; ⇒ -0.0e+NaN
+      (sqrt -9) ;; ⇒ -0.0e+NaN
+      ;;
+    #+END_SRC
+
+  + 指数运算函数
+    
+    指数运算函数包括 =exp、expt= 。
+
+    =exp= 函数是以 e 为底的指数运算 (e 是自然函数，是一个无限不循环小数，他的值
+    约为 2.718281828) 。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (exp 2) ;; ⇒ 7.38905609893065
+      ;;
+    #+END_SRC
+    
+    =expt= 函数是可以指定底数的指数运算。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (expt 2 3) ;; ⇒ 8
+      ;;
+    #+END_SRC
+
+  + 对数运算函数
+    
+    对数运算函数包括 =log、logb= 。
+    
+    =log= 函数默认以 e 底数，也可以自定义底数。返回值为浮点数。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (log 7.38905609893065) ;; ⇒ 2.0 ;; 默认底数为 e
+      (log 2) ;; ⇒ 0.6931471805599453 ;; 默认底数为 e
+      (log 4 2) ;; ⇒ 2.0 ;; 自定义底数为 4
+      ;;
+    #+END_SRC
+
+    =logb= 函数以 2 为底数，但是返回一个整数，此函数用来计算数的位。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (logb 2) ;; ⇒ 1
+      (logb 4) ;; ⇒ 2
+      (logb 8) ;; ⇒ 3
+      ;;
+    #+END_SRC
+
+  + =random= 随机数函数
+
+    使用 =(random)= 产生一个随机数 (其实是伪随机数)。启动 Emacs后产生的随机数序
+    列是相同的，第一次调用 (random) 总是生成 -1457731, 第二次总生成 -7692030. 当
+    然平常如果调用次数不同, 则随机数也不一样。但是可以使用 =(random t)= 函数，此
+    函数可以根据当前时间和 Emacs 的 PID 生成一个新的随机数种子。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (setq a8 (random t))
+      ;;
+    #+END_SRC
+* 附录
+  + 函数列表
+    
+    #+BEGIN_SRC emacs-lisp
+      ;; 测试函数
+      (integerp OBJECT)
+      (floatp OBJECT)
+      (numberp OBJECT)
+      (zerop NUMBER)
+      (wholenump OBJECT)
+      ;; 比较函数
+      (> NUM1 NUM2)
+      (< NUM1 NUM2)
+      (>= NUM1 NUM2)
+      (<= NUM1 NUM2)
+      (= NUM1 NUM2)
+      (eql OBJ1 OBJ2)
+      (/= NUM1 NUM2)
+      ;; 转换函数
+      (float ARG)
+      (truncate ARG &optional DIVISOR)
+      (floor ARG &optional DIVISOR)
+      (ceiling ARG &optional DIVISOR)
+      (round ARG &optional DIVISOR)
+      ;; 运算
+      (+ &rest NUMBERS-OR-MARKERS)
+      (- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
+      (* &rest NUMBERS-OR-MARKERS)
+      (/ DIVIDEND DIVISOR &rest DIVISORS)
+      (1+ NUMBER)
+      (1- NUMBER)
+      (abs ARG)
+      (% X Y)
+      (mod X Y)
+      (sin ARG)
+      (cos ARG)
+      (tan ARG)
+      (asin ARG)
+      (acos ARG)
+      (atan Y &optional X)
+      (sqrt ARG)
+      (exp ARG)
+      (expt ARG1 ARG2)
+      (log ARG &optional BASE)
+      (log10 ARG)
+      (logb ARG)
+      ;; 随机数
+      (random &optional N)
+      ;;
+    #+END_SRC
+
+  + 变量列表
+    #+BEGIN_SRC emacs-lisp
+      most-positive-fixnum
+      most-negative-fixnum
+      ;;
+    #+END_SRC
