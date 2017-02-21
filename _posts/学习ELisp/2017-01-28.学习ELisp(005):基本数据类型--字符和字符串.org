@@ -1,0 +1,285 @@
+#+TITLE: 学习ELisp(005):基本数据类型--字符和字符串
+#+DATE: <2017-01-28 Saturday 15:49:55>
+#+TAGS: Emacs, ELisp
+#+PERMALINK: 学习ELisp(005):基本数据类型--字符和字符串
+#+VERSION: 0.1
+#+CATEGORIES: Emacs, ELisp
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+# -*- eval: (setq org-download-image-dir (file-name-sans-extension (buffer-name))); -*-
+#+BEGIN_QUOTE
+学习资料：[[http://smacs.github.io/elisp/][Emacs Lisp 简明教程]]
+
+本章节主要记录 ELisp 对字符、字符串的处理。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+* 简介
+** 字符串
+  在 Emacs 中字符串是有序的字符数组， Emacs 的字符串可以容纳任何字符。 Emacs 字
+  符串有很多高级属性，例如有表示单字节和多字节的类型，有文本属性等。
+** 字符
+   字符串是由字符组成的，字符其实就是一个整数，例如字符 'A' 就是一个整数 65 。目
+   前字符串中的字符数目被限制在 0-524287 之间。
+   
+*** 获取字符相对应的那个整数
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (message "%i" ?A) ;; ⇒ "65"
+      (message "%i" ?a) ;; ⇒ "97"
+      ;;
+    #+END_SRC
+    对于标点和具有特殊意义的字符最好在 =?= 后面加上转义字符 =\= ，因为某些标点会
+    有歧义。对于没有特殊意义的标点，加上转义字符也没有副作用。
+    
+    特殊字符对照表（不包含标点）：
+   | 读入方式  | 含义                                |
+   |-----------+-------------------------------------|
+   | ?\a ⇒ 7   | 控制字符，control-g, `C-g'          |
+   | ?\b ⇒ 8   | 退格，backspace， <BS>，`C-h'       |
+   | ?\t ⇒ 9   | 制表符，tab，<TAB>，`C-i'           |
+   | ?\n ⇒ 10  | 换行符，newline，`C-j'              |
+   | ?\v ⇒ 11  | 垂直制表符，vertical tab，`C-k'     |
+   | ?\f ⇒ 12  | 换页符，formfeed character，`C-l'   |
+   | ?\r ⇒ 13  | 回车，carriage return，<RET>，`C-m' |
+   | ?\e ⇒ 27  | escape character，<ESC>，`C-['      |
+   | ?\s ⇒ 32  | 空格，space character，<SPC>        |
+   | ?\\ ⇒ 92  | 反斜杠，backslash character，`\'    |
+   | ?\d ⇒ 127 | 删除，delete character，<DEL>       |
+   控制字符可以有多种表示方式，比如 =C-i= ，一下几种都是正确的：
+   #+BEGIN_SRC emacs-lisp
+     ;; 以下的表示方法都对应整数 9
+     ?\^I
+     ?\^i
+     ?\C-I
+     ?\C-i
+     ;;
+   #+END_SRC
+* 测试函数
+  =stringp= 函数，测试是否为字符串
+  =char-or-string-p= 函数，测试是否为字符或字符串
+  =string-or-null-p= 函数，测试是否为字符串或 nil
+  #+BEGIN_SRC emacs-lisp
+    (setq str01 "")
+    (setq str02 nil)
+
+    (stringp "a") ;; ⇒ t
+    (stringp "asdf") ;; ⇒ t
+    (stringp str01) ;; ⇒ t
+    (stringp str02) ;; ⇒ nil
+
+    (string-or-null-p "a") ;; ⇒ t
+    (string-or-null-p "asdf") ;; ⇒ t
+    (string-or-null-p str01) ;; ⇒ t
+    (string-or-null-p str02) ;; ⇒ t
+
+    (char-or-string-p "a") ;; ⇒ t
+    (char-or-string-p "asdf") ;; ⇒ t
+    (char-or-string-p str01) ;; ⇒ t
+    (char-or-string-p str02) ;; ⇒ nil
+    ;;
+  #+END_SRC
+  ELisp 中没有测试字符串是否为空的函数，自定义一个：
+  #+BEGIN_SRC emacs-lisp
+    (defun string-is-empty-p (str)
+      "测试字符串 str 是否为空"
+      (not (string< "" str)))
+    ;; 或：
+    (defun string-is-empty-p (str)
+      "测试字符串 str 是否为空"
+      (= (length str) 0))
+    ;;
+  #+END_SRC
+* 构造函数
+  + 创建字符串
+
+    ELisp 中使用 =make-string= 函数创建一个字符串，但是字符串里面包含的字符都是
+    一样的。使用 =string= 函数可以创建包含不同字符的字符串。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (make-string 5 ?x) ;; ⇒ "xxxxx"
+      (string ?a ?b ?c) ;; ⇒ "abc"
+      ;;
+    #+END_SRC
+
+  + 使用已有的字符串生成新的字符串
+    
+    ELisp 中使用 =substring= 函数可以截取已有字符串的一部分生成一个新的字符串。
+    使用 =concat= 可以把已有的多个字符串链接起来生成一个新的字符串。
+    #+BEGIN_QUOTE
+    *注：* 
+
+    =substring= 函数里可选的包含两个参数，用来指定截取的开始和结束位置。若设置的
+    结束位置大于已有字符串的长度或小于设置的开始位置，运行报错。
+    #+END_QUOTE
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (substring "0123456789" 3) ;; ⇒ "3456789"
+      (substring "0123465789" 3 5) ;; ⇒ "34"
+      (substring "0123456789" -3 -1) ;; ⇒ "78"
+      (substring "0123465789" 3 11) ;; ⇒ 报错 ;; 终点越界
+      (substring "0123456789" 5 3) ;; ⇒ 报错 ;; 终点比起点小
+
+      (concat "a" "b" "c") ;; ⇒ "abc"
+      ;;
+    #+END_SRC
+* 比较函数
+  + 字符使用 =char-equal= 函数进行比较，此函数区分大小写。
+    #+BEGIN_QUOTE
+    *注：*
+
+    如果 Emacs 设置了搜索时忽略大小写，即变量 =case-fold-search= 设置为 t 时，此
+    函数对字符进行比较时将忽略大小写，慎用。
+    #+END_QUOTE
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      ;; 此时我的 Emacs 的变量 case-fold-search 设置为了t
+      (char-equal ?a ?A) ;; ⇒ t
+      ;;
+    #+END_SRC
+
+  + 字符串比较函数
+
+    =string== 和 =string-equal= 比较字符串是否相等。
+
+    =string<= 和 =string-lessp= 比较两个字符串的长短(个人理解)
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (string= "a" "a") ;; ⇒ t
+      (string-equal "a" "a") ;; ⇒ t
+      (string< "as" "asdf") ;; ⇒ t
+      (string-lessp "as" "asdf") ;; ⇒ t
+      ;;
+    #+END_SRC
+    =length= 获取字符串的长度。
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (length "as") ;; ⇒ 2
+      (length "") ;; ⇒ 0
+      ;;
+    #+END_SRC
+* 转换函数
+  + 字符和字符串
+    
+    =char-to-string= 函数，把字符转换为字符串，只能转换单个字符。
+
+    =string-to-char= 函数，把字符串转换为字符，只能返回字符串的第一个字符，且返
+    回的是以整数方式返回。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (char-to-string ?a) ;; ⇒ "a"
+      (string-to-char "asdf") ;; ⇒ 97
+      ;;
+    #+END_SRC
+
+  + 数字和字符串
+    
+    =number-to-string= 函数，把数字转换为字符串。
+
+    =string-to-number= 函数，把字符串转换为数字。(可以指定被转换字符串的进制
+    2-16 进制之间，转换为10进制)
+
+    如果要把数字输出为十进制或十六进制的字符串，使用 =format= 函数。目前 ELisp
+    没有输出为二进制的函数， calculator 库可以。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (number-to-string 123) ;; ⇒ "123"
+      (number-to-string -2) ;; ⇒ "-2"
+      (number-to-string 1.8) ;; ⇒ "1.8"
+      (number-to-string 1e3) ;; ⇒ "1000.0"
+
+      (format "%#o" 12) ;; ⇒ "014" ;; 输出为八进制
+      (format "%#x" 12) ;; ⇒ "0xc" ;; 输出为十六进制
+
+      (string-to-number "123") ;; ⇒ 123
+      (string-to-number "1a2") ;; ⇒ 1
+      (string-to-number "92a") ;; ⇒ 92
+      (string-to-number "a12f") ;; ⇒ 0
+      (string-to-number "1e3") ;; ⇒ 1000.0
+      (string-to-number "14" 8) ;; ⇒ 12
+      ;;
+    #+END_SRC
+
+  + 列表、向量和字符串
+
+    =concat= 函数，把一个字符构成的列表或向量转换为字符串。
+
+    =vconcat= 函数，把一个字符串转换为一个向量。
+
+    =append= 函数，把字符串转换为一个列表。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (concat '(?a ?b ?c)) ;; ⇒ "abc" ;; 列表转字符串
+      (concat [?a ?b ?c]) ;; ⇒ "abc" ;; 向量转字符串
+      (vconcat "abc") ;; ⇒ [97 98 99] ;; 字符串转向量
+      (append "abc" nil) ;; ⇒ (97 98 99) ;; 字符串转列表
+      ;;
+    #+END_SRC
+
+  + 大小写转换
+    
+    =downcase= 函数，把字符或字符串中的所有字符转换为小写。
+
+    =upcase= 函数，把字符或字符串中的所有字符转换为大写。
+
+    =capitalize= 函数，把字符或字符串中的所有单词的第一个字母转换为大写，其他转
+    换为小写。
+
+    =upcase-initials= 函数，把字符或字符串中所有单词的首字母转换为大写，其他字符
+    不变。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (downcase "THe cAt IN thE HaT") ;; ⇒ "the cat in the hat"
+      (downcase ?A) ;; ⇒ 97 ;; a
+      (upcase "thE cAt in thE HaT") ;; ⇒ "THE CAT IN THE HAT"
+      (upcase ?a) ;; ⇒ 65 ;; A
+      (capitalize "tHe caT iN thE Hat") ;; ⇒ "The Cat In The Hat"
+      (capitalize ?a) ;; ⇒ 65 ;; A
+      (upcase-initials "tHe caT in thE hAT") ;; ⇒ "THe CaT In ThE HAT"
+      (upcase-initials ?a) ;; ⇒ 65 ;; A
+      ;;
+    #+END_SRC
+* 附录
+  + 函数列表
+    #+BEGIN_SRC emacs-lisp
+      ;; 测试函数
+      (stringp OBJECT)
+      (string-or-null-p OBJECT)
+      (char-or-string-p OBJECT)
+      ;; 构建函数
+      (make-string LENGTH INIT)
+      (string &rest CHARACTERS)
+      (substring STRING FROM &optional TO)
+      (concat &rest SEQUENCES)
+      ;; 比较函数
+      (char-equal C1 C2)
+      (string= S1 S2)
+      (string-equal S1 S2)
+      (string< S1 S2)
+      ;; 转换函数
+      (char-to-string CHAR)
+      (string-to-char STRING)
+      (number-to-string NUMBER)
+      (string-to-number STRING &optional BASE)
+      (downcase OBJ)
+      (upcase OBJ)
+      (capitalize OBJ)
+      (upcase-initials OBJ)
+      (format STRING &rest OBJECTS)
+      ;; 查找与替换
+      (string-match REGEXP STRING &optional START)
+      (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING SUBEXP)
+      (replace-regexp-in-string REGEXP REP STRING &optional FIXEDCASE LITERAL SUBEXP START)
+      (subst-char-in-string FROMCHAR TOCHAR STRING &optional INPLACE)
+      ;;
+    #+END_SRC

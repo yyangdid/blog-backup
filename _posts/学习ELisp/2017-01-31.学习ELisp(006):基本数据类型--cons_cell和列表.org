@@ -1,0 +1,228 @@
+#+TITLE: 学习ELisp(006):基本数据类型--cons_cell和列表
+#+DATE: <2017-01-31 Tuesday 14:11:32>
+#+TAGS: Emacs, ELisp
+#+PERMALINK: 学习ELisp(006):基本数据类型--cons_cell和列表
+#+VERSION: 0.1
+#+CATEGORIES: Emacs, ELisp
+#+LAYOUT: post
+#+AUTHOR: yyangdid
+#+EMAIL: yyangdid@gmail.com
+#+COMMENTS: yes
+# -*- eval: (setq org-download-image-dir (file-name-sans-extension (buffer-name))); -*-
+#+BEGIN_QUOTE
+学习资料：[[http://smacs.github.io/elisp/][Emacs Lisp 简明教程]]
+
+本章节主要记录对 cons cell 和列表的操作，标题中不能使用空格所以把 =cons cell= 写
+为了 =cons_cell= 。
+#+END_QUOTE
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
+* cons cell
+  个人把 =cons cell= 理解为只有两个元素的列表，第一个是 /CAR/ ，第一个是 /CDR/ 。
+  
+  例：
+  #+BEGIN_SRC emacs-lisp
+    '(1 . 2) ;; ⇒ (1 . 2)
+    '(1 . "a") ;; ⇒ (1 . "a")
+    '(nil . 1) ;; ⇒ (nil . 1)
+    '(nil . nil) ;; ⇒ (nil)
+    ;; 符号 ' 等价于 (quote )
+    (quote (1 . 2)) ;; ⇒ (1 . 2)
+
+    (read "(1 . 2)") ;; ⇒ (1 . 2)
+    ;;
+  #+END_SRC
+* 列表
+  列表包含了 =cons cell= ，列表可以包含多个元素，列表有一个特殊的元素 -- 空表 =nil= 。
+
+  空表 =nil= 不是 =cons cell= ，因为没有 /CAR/ 和 /CDR/ 。为了编程方便可以认为空
+  表的 /CAR/ 和 /CDR/ 都为 =nil= 。
+
+  例：
+  #+BEGIN_SRC emacs-lisp
+    '() ;; ⇒ nil
+    (car nil) ;; ⇒ nil
+    (cdr nil) ;; ⇒ nil
+    ;;
+  #+END_SRC
+  
+  按照列表最后一个 cons cell 的 /CDR/ 部分的类型不同，可以把列表分为三类：
+  
+  + 如果是 nil ，称为 =真列表(true list)= 。
+  + 如果既不是 nil ，也不是一个完整的 cons cell ，称为 =点列表(dotted list)= 。
+  + 如果它指向列表中之前的一个 cons cell，则称为 =环形列表(circular list)= 。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      '(1 2 3) ;; ⇒ (1 2 3) ;; 真列表
+      '(1 2 3 . 4) ;; ⇒ (1 2 3 .4) ;; 点列表
+      '(1 . #1=(2 3 . #1#)) ;; ⇒ (1 2 3 . #1) ;; 环形列表
+      ;;
+    #+END_SRC
+* 测试函数
+  
+  测试一个对象是否是 cons cell 用 =consp= 函数，是否是列表用 =listp= 函数，是否
+  为 nil使用 =null= 函数。
+
+  例：
+  #+BEGIN_SRC emacs-lisp
+    (consp '(1 . 2)) ;; ⇒ t
+    (consp '(1 . (2 . nil))) ;; ⇒ t
+    (consp nil) ;; ⇒ nil
+    (listp '(1 . 2)) ;; ⇒ t
+    (listp '(1 . (2 . nil))) ;; ⇒ t
+    (listp nil) ;; ⇒ t
+
+    (null nil) ;; ⇒ t
+    (null '(1 2)) ;; ⇒ nil
+    ;;
+  #+END_SRC
+* 构造函数
+  + 使用 =cons= 函数生成 cons cell ：
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (cons 1 2) ;; ⇒ (1 . 2)
+      (cons 1 '()) ;; ⇒ (1)
+      ;;
+    #+END_SRC
+    =cons= 函数也可在列表前面增加元素：
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (setq list001 '(a b)) ;; ⇒ (a b)
+      (cons 'x list001) ;; ⇒ (x a b)
+      list001 ;; ⇒ (a b)
+      ;;
+    #+END_SRC
+    使用 =cons= 函数在列表前面添加元素并不会改变列表本身的值，使用 =push= 函数可
+    以在加入元素的同时改变列表的值。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (push 'x list001) ;; ⇒ (x a b)
+      list001 ;; ⇒ (x a b)
+      ;;
+    #+END_SRC
+
+  + 使用 =list= 函数生成列表：(注意 =list= 函数和 =quote= 函数的区别)
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (list 1 2 3) ;; ⇒ (1 2 3)
+      '(1 2 3) ;; ⇒ (1 2 3)
+      '((+ 1 2) 3) ;; ⇒ ((+ 1 2) 3)
+      (list (+ 1 2) 3) ;; ⇒ (3 3)
+            ;;
+    #+END_SRC
+
+  + 使用 =append= 可以在列表的后面添加元素：
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      ;; 使用 append 追加列表
+      (setq list002 '(a b)) ;; ⇒ (a b)
+      (append list002 '(c)) ;; ⇒ (a b c)
+      (append list002 '(c) '(d) '(e)) ;; ⇒ (a b c d e)
+      list002 ;; ⇒ (a b)
+      ;; 使用 append 追加对象
+      (append list002 'c) ;; ⇒ (a b . c) ;; 此时列表就不是真列表了，如再进行 append 操作会报错
+      (append [a b] "cd" nil) ;; ⇒ (a b 99 100)
+      (append [a b] "cd") ;; ⇒ (a b . "cd")
+            ;;
+    #+END_SRC
+
+* 把列表当成数组用
+
+    使用 =car= 和 =cdr= 获取列表的第一个元素和剩余元素， =cdr= 获取的返回值是一个列表。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (car '(1 2 3)) ;; ⇒ 1
+      (cdr '(1 2 3)) ;; ⇒ (2 3)
+      (cdr (cdr '(1 2 3))) ;; ⇒ (3)
+      (car (cdr (cdr '(1 2 3)))) ;; ⇒ 3
+      ;;
+    #+END_SRC
+
+  + =nth= 函数获取 cdr 的第 /N/ 个元素，返回元素。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (nth 3 '(0 1 2 3 4 5)) ;; ⇒ 3
+      ;;
+    #+END_SRC
+    #+ATTR_ORG: :width 300px
+    #+ATTR_HTML: :width 300px
+    #+ATTR_HTML: :alt (点击图片可放大)
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nth_2017-02-04_20-09-56.svg]]
+
+  + =nthcdr= 函数获取 cdr 的 /N/ 后面所有的元素，返回列表。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (nthcdr 3 '(0 1 2 3 4 5)) ;; ⇒ (3 4 5)
+      ;;
+    #+END_SRC
+    #+ATTR_ORG: :width 300px
+    #+ATTR_HTML: :width 300px
+    #+ATTR_HTML: :alt (点击图片可放大)       
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nthcdr_2017-02-04_20-31-09.svg]]
+
+  + =last= 函数获取 cdr 最后 /N/ 个元素的列表。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (last '(0 1 2 3 4 5) 2) ;; ⇒ (4 5)
+      ;;
+    #+END_SRC
+    #+ATTR_ORG: :width 300px
+    #+ATTR_HTML: :width 300px
+    #+ATTR_HTML: :alt (点击图片可放大)      
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-last_2017-02-04_20-39-46.svg]]
+
+  + =butlast= 函数获取 cdr 除最后 /N/ 个元素的列表。
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (butlast '(0 1 2 3 4 5) 2) ;; ⇒ (0 1 2 3)
+      ;;
+    #+END_SRC
+    #+ATTR_ORG: :width 300px
+    #+ATTR_HTML: :width 300px
+    #+ATTR_HTML: :alt (点击图片可放大)
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-butlast_2017-02-04_20-45-47.svg]]
+  #+BEGIN_QUOTE
+  =car、cdr、nth、nthcdr、last、butlast= 不会改变变量的值。
+  #+END_QUOTE
+
+  + =setcar、setcdr= 修改 cons cell 会改变原有的 car 和 cdr 。
+    
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (setq foo1 '(a b c)) ;; ⇒ (a b c)
+      (setcar foo1 'x) ;; ⇒ x
+      foo1 ;; ⇒ (x b c)
+      (setcdr foo1 '(y z)) ;; ⇒ (y z)
+      foo1 ;; ⇒ (x y z)
+      ;;
+    #+END_SRC
+    #+ATTR_ORG: :width 300px
+    #+ATTR_HTML: :width 300px
+    #+ATTR_HTML: :alt (点击图片可放大)
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-setcar&setcdr_2017-02-04_21-11-40.svg]]
+
+  + 组合使用
+
+    例：
+    #+BEGIN_SRC emacs-lisp
+      (setq foo2 '(1 2 3)) ;; ⇒ (1 2 3)
+      (setcar foo2 'a) ;; ⇒ a
+      (setcar (cdr foo2) 'b) ;; ⇒ b
+      foo2 ;; ⇒ (a b 3)
+      (setcar (nthcdr 2 foo2) 'c) ;; ⇒ c
+      foo2 ;; ⇒ (a b c)
+      ;;
+    #+END_SRC
