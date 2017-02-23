@@ -14,9 +14,9 @@
 
 本章节主要记录 ELisp 对数字的一些操作：类型测试、数字比较、数字运算、数字转换。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 
 * 数字分类和表示方法
   ELisp 中的数字分为整数和浮点数( =没有双精度浮点数 double= )和 NaN 。

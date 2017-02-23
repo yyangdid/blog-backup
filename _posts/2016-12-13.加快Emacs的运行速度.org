@@ -13,9 +13,9 @@
 =.emacs.d= 文件夹放到内存中，而内存的吞吐速度要比普通的机械硬盘快的多，相应的
 emacs 的速度也会有很大提升。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 #+BEGIN_QUOTE
 此方法只在 Linux 系统中测试了，个人系统 =openSUSE42.2=
 #+END_QUOTE

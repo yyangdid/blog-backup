@@ -14,9 +14,9 @@
 
 本章节主要记录 ELisp 编程中的基本概念，例如如何定义函数，控制结构，变量的使用和作用域......
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 函数和变量
 ** 函数的声明和调用
 + 声明一个函数的格式：

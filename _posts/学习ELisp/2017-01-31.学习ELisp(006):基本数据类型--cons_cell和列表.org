@@ -15,9 +15,9 @@
 本章节主要记录对 cons cell 和列表的操作，标题中不能使用空格所以把 =cons cell= 写
 为了 =cons_cell= 。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 
 * cons cell
   个人把 =cons cell= 理解为只有两个元素的列表，第一个是 /CAR/ ，第一个是 /CDR/ 。
@@ -157,7 +157,7 @@
     #+ATTR_ORG: :width 300px
     #+ATTR_HTML: :width 300px
     #+ATTR_HTML: :alt (点击图片可放大)
-    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nth_2017-02-04_20-09-56.svg]]
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nth_2017-02-04_20-09-56.png]]
 
   + =nthcdr= 函数获取 cdr 的 /N/ 后面所有的元素，返回列表。
 
@@ -169,7 +169,7 @@
     #+ATTR_ORG: :width 300px
     #+ATTR_HTML: :width 300px
     #+ATTR_HTML: :alt (点击图片可放大)       
-    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nthcdr_2017-02-04_20-31-09.svg]]
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-nthcdr_2017-02-04_20-31-09.png]]
 
   + =last= 函数获取 cdr 最后 /N/ 个元素的列表。
 
@@ -181,7 +181,7 @@
     #+ATTR_ORG: :width 300px
     #+ATTR_HTML: :width 300px
     #+ATTR_HTML: :alt (点击图片可放大)      
-    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-last_2017-02-04_20-39-46.svg]]
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-last_2017-02-04_20-39-46.png]]
 
   + =butlast= 函数获取 cdr 除最后 /N/ 个元素的列表。
 
@@ -193,7 +193,7 @@
     #+ATTR_ORG: :width 300px
     #+ATTR_HTML: :width 300px
     #+ATTR_HTML: :alt (点击图片可放大)
-    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-butlast_2017-02-04_20-45-47.svg]]
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-butlast_2017-02-04_20-45-47.png]]
   #+BEGIN_QUOTE
   =car、cdr、nth、nthcdr、last、butlast= 不会改变变量的值。
   #+END_QUOTE
@@ -212,7 +212,7 @@
     #+ATTR_ORG: :width 300px
     #+ATTR_HTML: :width 300px
     #+ATTR_HTML: :alt (点击图片可放大)
-    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-setcar&setcdr_2017-02-04_21-11-40.svg]]
+    [[file:2017-01-31.学习ELisp(006):基本数据类型--cons_cell和列表/ELisp-list-setcar&setcdr_2017-02-04_21-11-40.png]]
 
   + 组合使用
 

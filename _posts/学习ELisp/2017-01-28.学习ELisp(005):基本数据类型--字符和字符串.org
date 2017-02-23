@@ -14,9 +14,9 @@
 
 本章节主要记录 ELisp 对字符、字符串的处理。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 简介
 ** 字符串
   在 Emacs 中字符串是有序的字符数组， Emacs 的字符串可以容纳任何字符。 Emacs 字

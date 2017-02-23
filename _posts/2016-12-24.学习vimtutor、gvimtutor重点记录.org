@@ -14,9 +14,9 @@ vimtutor 和 gvimtutor 是 Vim 和 GVim 官方的简单教程，主要介绍了 
 在终端下，gvimtutor 是在 GUI 下，因为此文件是只读文件，所以在此文件中可以随意测
 试、更改。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 如何打开 vimtutor、gvimtutor
 ** 使用终端打开
 *** 打开 vimtutor

@@ -12,9 +12,9 @@
 #+BEGIN_QUOTE
 学习 [[https://learnxinyminutes.com/][X分钟速成Y]] 系列之 [[https://learnxinyminutes.com/docs/elisp/][elisp]] 版本（官方中文版：[[https://learnxinyminutes.com/docs/zh-cn/elisp-cn/][elisp]]）。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 + ELisp是由符号表达式构成的（即 =s-表达式= 或 =s式= ）， =s-表达式= 两侧由括号 =()= 包围，一个 =s-表达式= 可以包含 =原子符号= 和 =其他的 s-表达式= 。
 #+BEGIN_SRC emacs-lisp
 ;; ELisp 使用分号表示本行注释开始

@@ -12,9 +12,9 @@
 #+BEGIN_QUOTE
 51 单片机需要的基础知识。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 
 * 电平特性
 
@@ -82,7 +82,7 @@
        #+ATTR_ORG: :width 300px
        #+ATTR_HTML: :width 300px
        #+ATTR_HTML: :alt (点击图片可放大) 
-       [[file:2017-02-15.单片机基础知识/decimal-positive-integer-converted-to-binary_2017-02-15_21-21-55.svg]]
+       [[file:2017-02-15.单片机基础知识/decimal-positive-integer-converted-to-binary_2017-02-15_21-21-55.png]]
        
 **** 负整数转二进制
      + =运算方法：=
@@ -94,7 +94,7 @@
        #+ATTR_ORG: :width 300px
        #+ATTR_HTML: :width 300px
        #+ATTR_HTML: :alt (点击图片可放大)
-       [[file:2017-02-15.单片机基础知识/decimal-negative-integer-converted-to-binary_2017-02-15_21-34-27.svg]]
+       [[file:2017-02-15.单片机基础知识/decimal-negative-integer-converted-to-binary_2017-02-15_21-34-27.png]]
 
 **** 小数转二进制
      + 运算方法：乘二取整，正序排列。
@@ -108,7 +108,7 @@
        #+ATTR_ORG: :width 300px
        #+ATTR_HTML: :width 300px
        #+ATTR_HTML: :alt (点击图片可放大)
-       [[file:2017-02-15.单片机基础知识/decimals-converted-to-binary_2017-02-16_12-01-58.svg]]
+       [[file:2017-02-15.单片机基础知识/decimals-converted-to-binary_2017-02-16_12-01-58.png]]
 *** 二进制转换为十进制
 **** 整数二进制转换为十进制
      首先将二进制的位数补齐，首位为 0 则是整数，为 1 则为负数。
@@ -120,7 +120,7 @@
      #+ATTR_ORG: :width 300px
      #+ATTR_HTML: :width 300px
      #+ATTR_HTML: :alt (点击图片可放大)
-     [[file:2017-02-15.单片机基础知识/binary-converted-to-integer_2017-02-16_12-24-13.svg]]
+     [[file:2017-02-15.单片机基础知识/binary-converted-to-integer_2017-02-16_12-24-13.png]]
 **** 小数二进制转换为十进制
      将二进制的每位数字乘以对应位数的 2 的负幂次数，然后相加。
 
@@ -128,7 +128,7 @@
      #+ATTR_ORG: :width 300px
      #+ATTR_HTML: :width 300px
      #+ATTR_HTML: :alt (点击图片可放大)
-     [[file:2017-02-15.单片机基础知识/binary-converted-to-decimals_2017-02-16_12-56-15.svg]]
+     [[file:2017-02-15.单片机基础知识/binary-converted-to-decimals_2017-02-16_12-56-15.png]]
 *** 十进制转换为十六进制
 *** 十六进制转换为十进制
 *** 二进制转换为十六进制
@@ -178,7 +178,7 @@
   #+ATTR_ORG: :width 300px
   #+ATTR_HTML: :width 300px
   #+ATTR_HTML: :alt (点击图片可放大) 
-  [[file:2017-02-15.单片机基础知识/80C51-pin-decal_2017-02-16_16-28-39.svg]]
+  [[file:2017-02-15.单片机基础知识/80C51-pin-decal_2017-02-16_16-28-39.png]]
 *** P3 口第二功能各引脚功能定义
     | 引脚 | 第二功能标注 | 第二功能解释      |
     |------+--------------+-------------------|
@@ -194,7 +194,7 @@
    #+ATTR_ORG: :width 300px
    #+ATTR_HTML: :width 300px
    #+ATTR_HTML: :alt (点击图片可放大)
-   [[file:2017-02-15.单片机基础知识/8051-internal-structure_2017-02-16_17-53-05.svg]]
+   [[file:2017-02-15.单片机基础知识/8051-internal-structure_2017-02-16_17-53-05.png]]
    
 ** 总线(BUS)
      
@@ -249,7 +249,7 @@
    #+ATTR_ORG: :width 300px
    #+ATTR_HTML: :width 300px
    #+ATTR_HTML: :alt (点击图片可放大) 
-   [[file:2017-02-15.单片机基础知识/8051-basic-timing_2017-02-20_20-12-26.svg]]
+   [[file:2017-02-15.单片机基础知识/8051-basic-timing_2017-02-20_20-12-26.png]]
 *** 震荡周期
     震荡周期也称为时钟周期，是指为单片机提供时钟脉冲信号的震荡源的周期，开发板上
     为 12MHZ。
@@ -277,17 +277,17 @@
      #+ATTR_ORG: :width 300px
      #+ATTR_HTML: :width 300px
      #+ATTR_HTML: :alt (点击图片可放大)
-     [[file:2017-02-15.单片机基础知识/scm-0002_2017-02-20_21-02-47.svg]]
+     [[file:2017-02-15.单片机基础知识/scm-0002_2017-02-20_21-02-47.png]]
     + 准双向 IO
      #+ATTR_ORG: :width 300px
      #+ATTR_HTML: :width 300px
      #+ATTR_HTML: :alt (点击图片可放大) 
-     [[file:2017-02-15.单片机基础知识/scm-0001_2017-02-20_20-31-27.svg]]
+     [[file:2017-02-15.单片机基础知识/scm-0001_2017-02-20_20-31-27.png]]
     + 强推挽输出
      #+ATTR_ORG: :width 300px
      #+ATTR_HTML: :width 300px
      #+ATTR_HTML: :alt (点击图片可放大)
-     [[file:2017-02-15.单片机基础知识/scm-0003_2017-02-20_21-24-35.svg]]
+     [[file:2017-02-15.单片机基础知识/scm-0003_2017-02-20_21-24-35.png]]
 *** 上下拉电阻
     + 概念
 
@@ -314,5 +314,5 @@
        #+ATTR_ORG: :width 300px
        #+ATTR_HTML: :width 300px
        #+ATTR_HTML: :alt (点击图片可放大)
-       [[file:2017-02-15.单片机基础知识/scm-0004_2017-02-20_21-58-33.svg]]
+       [[file:2017-02-15.单片机基础知识/scm-0004_2017-02-20_21-58-33.png]]
 * C51 基础知识

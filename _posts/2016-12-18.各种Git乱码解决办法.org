@@ -11,9 +11,9 @@
 #+BEGIN_QUOTE
 各种 Git 乱码解决办法。测试系统为 openSUSE Leap 42.2。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 #+BEGIN_QUOTE
 主要参考资料来自[[http://blog.csdn.net/kl222/article/details/32903495][康林工作室-git 设置]]和[[http://blog.csdn.net/yunnywu/article/details/50553908][码农天注定-git 乱码解决方案汇总]]
 #+END_QUOTE

@@ -13,9 +13,9 @@
 料的来源、用到的资料，在以后的记录中就不做重复的资料来源介绍了。当然，和学习其他
 语言一样，先来个Hello World ^V^
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 学习材料
 + [[https://learnxinyminutes.com/docs/elisp/][Learn X in Y minutes]]
   中文版：[[https://learnxinyminutes.com/docs/zh-cn/elisp-cn/][官方中文版]]

@@ -12,9 +12,9 @@
 emacs tutorial 是 Emacs 官方的快速指南，主要介绍了 Emacs 在编辑时一些常用的组合
 按键，一些术语的说明。因为此文件是只读文件，所以在此文件中可以随意测试、更改。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 如何打开 emacs tutorial
 这里介绍在 emacs 中两种打开 tutorial 的方式（都是指在 =图形界面= 的 emacs 中）。
 ** 用鼠标

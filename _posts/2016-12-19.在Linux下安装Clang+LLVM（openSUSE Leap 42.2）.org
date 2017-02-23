@@ -11,9 +11,9 @@
 #+BEGIN_QUOTE
 在 Linux 下安装 Clang+LLVM（预编译版本）。测试系统为 openSUSE Leap 42.2。
 #+END_QUOTE
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 <!--more-->
-#+END_HTML
+#+END_EXPORT
 * 下载
 进入 [[http://releases.llvm.org/download.html]] 下载，此时的最新版本为 =3.9.0= ，找
 到 =Pre-Built Binaries:= 列表下的对应发行版的预编译版本，此处下载的为 openSUSE 版：
